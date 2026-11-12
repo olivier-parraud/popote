@@ -3193,7 +3193,7 @@ let memCopy = null;
 const DEFAULT = () => ({
   v:1, onboarded:false, store:"leclerc", budget:50, people:1, meals:{P:false,M:true,S:true}, days:7,
   diet:"", allergies:[], cuisines:Object.keys(CUISINES),
-  week:null, history:[], favs:[], dislikes:[], custom:[], customIng:{}, prices:{}, stock:{}, toBuy:{}, checked:{}, batchDone:{},
+  week:null, history:[], favs:[], dislikes:[], custom:[], customIng:{}, prices:{}, stock:{}, toBuy:{}, checked:{}, batchDone:{}, batchDays:5,
   tonight:{people:3, moods:["vite"]}
 });
 function loadState(){
@@ -4000,15 +4000,18 @@ function batchInfo(r){
   const fridge = m ? +m[1] : 0, freeze = /congélateur/.test(k) && !/sans/.test(k.split("congélateur")[0].slice(-20));
   return {fridge, freeze, ok:fridge >= 3 || freeze};
 }
-function generateBatchWeek(){
+function batchCandidates(){ return RX.filter(r => r.m !== "P" && (r.m.includes("M") || r.m.includes("S")) && allowed(r) && batchInfo(r).ok); }
+function batchSlots(){ return buildSlots(S.batchDays || 5, S.meals); }
+function generateBatchWeek(keep){
   rebuild();
-  const slots = buildSlots(S.days, S.meals);
-  const mains = slots.map((s,i) => ({...s, i})).filter(s => s.m !== "P");
-  if (!mains.length){ toast("Coche le déjeuner ou le dîner dans les réglages."); return false; }
-  const cand = RX.filter(r => r.m !== "P" && (r.m.includes("M") || r.m.includes("S")) && allowed(r) && batchInfo(r).ok);
+  const slots = batchSlots();
+  const n = slots.filter(s => s.m !== "P").length;
+  if (!n){ toast("Coche le déjeuner ou le dîner dans les réglages."); return false; }
+  const cand = batchCandidates();
   if (cand.length < 3){ toast("Pas assez de plats qui se conservent avec tes filtres."); return false; }
-  const n = mains.length, K = Math.max(2, Math.min(6, Math.round(n/3), cand.length));
+  const K = Math.max(2, Math.min(6, Math.round(n/3), cand.length));
   const counts = Array.from({length:K}, (_, j) => Math.floor(n/K) + (j < n % K ? 1 : 0));
+  const keepIds = (keep || []).map(r => r && (r.id || r)); const fixed = cand.filter(r => keepIds.includes(r.id)).sort((a,b) => keepIds.indexOf(a.id) - keepIds.indexOf(b.id)).slice(0, K);
   const recent = recentMap(true), favs = new Set(S.favs);
   const pref = {}; cand.forEach(r => pref[r.id] = Math.random());
   function score(set){
@@ -4016,25 +4019,33 @@ function generateBatchWeek(){
     const C = totalFor(ids, S.people, true);
     let E = 0.3*C + (C > S.budget ? 8*(C - S.budget) + 5 : 0);
     const cu = {}, pt = {};
-    for (const r of set){ cu[r.c] = (cu[r.c]||0) + 1; pt[r.prot] = (pt[r.prot]||0) + 1; if (recent[r.id]) E += 3; if (favs.has(r.id)) E -= 1; E -= 2*pref[r.id]; if (!batchInfo(r).freeze) E += 0.6; }
+    for (const r of set){ cu[r.c] = (cu[r.c]||0) + 1; pt[r.prot] = (pt[r.prot]||0) + 1; if (recent[r.id] && !fixed.includes(r)) E += 3; if (favs.has(r.id)) E -= 1; E -= 2*pref[r.id]; if (!batchInfo(r).freeze) E += 0.6; }
     for (const k in cu) if (cu[k] > 1) E += 2.5*(cu[k]-1);
     const words = set.map(r => new Set(normW(r.n).split(/[^a-z]+/).filter(x => x.length >= 5)));
-    for (let a = 0; a < set.length; a++) for (let b = a+1; b < set.length; b++) for (const x of words[a]) if (words[b].has(x)) { E += 3; break; }
+    for (let x = 0; x < set.length; x++) for (let y = x+1; y < set.length; y++) for (const w of words[x]) if (words[y].has(w)) { E += 3; break; }
     for (const k in pt) if (pt[k] > 1) E += 2*(pt[k]-1);
     return {E, C};
   }
   const pick = () => cand[(Math.random()*cand.length)|0];
   let best = null, bestS = null;
   for (let t = 0; t < 300; t++){
-    const set = []; while (set.length < K){ const r = pick(); if (!set.includes(r)) set.push(r); }
+    const set = fixed.slice(); while (set.length < K){ const r = pick(); if (!set.includes(r)) set.push(r); }
     const sc = score(set); if (!best || sc.E < bestS.E){ best = set; bestS = sc; }
   }
-  for (let t = 0; t < 600; t++){
-    const set = best.slice(), j = (Math.random()*K)|0; const r = pick(); if (set.includes(r)) continue; set[j] = r;
+  if (fixed.length < K) for (let t = 0; t < 600; t++){
+    const set = best.slice(), j = fixed.length + ((Math.random()*(K - fixed.length))|0); const r = pick(); if (set.includes(r)) continue; set[j] = r;
     const sc = score(set); if (sc.E < bestS.E){ best = set; bestS = sc; }
   }
-  // Répartition : les plats qui se congèlent mal en début de semaine, jamais deux fois de suite
-  const left = best.map((r, j) => ({r, c:counts[j], info:batchInfo(r)}));
+  const old = S.week;
+  if (old && (old.done || old.start < addDaysISO(todayISO(), -4))) pushHistory(old);
+  fillBatchWeek(best, counts, slots);
+  return true;
+}
+// Répartit les plats sur les repas : ceux qui se congèlent mal en début de semaine, jamais deux fois de suite
+function fillBatchWeek(set, counts, slots, opt){
+  opt = opt || {};
+  const mains = slots.filter(s => s.m !== "P");
+  const left = set.map((r, j) => ({r, c:counts[j], info:batchInfo(r)}));
   const assign = [];
   let prev = null;
   for (const sl of mains){
@@ -4044,17 +4055,51 @@ function generateBatchWeek(){
     pool.sort((a,b) => (a.info.freeze - b.info.freeze) || (b.c - a.c));
     const x = pool[0]; x.c--; prev = x.r; assign.push(x.r.id);
   }
-  const old = S.week;
-  if (old && (old.done || old.start < addDaysISO(todayISO(), -4))) pushHistory(old);
-  const pPool = poolFor("P").map(i => RX[i]);
-  const pList = shuffleWithSeed(pPool, (Math.random()*1000)|0);
+  const pList = shuffleWithSeed(poolFor("P").map(i => RX[i]), (Math.random()*1000)|0);
   let a = 0, pb = 0;
-  S.week = {start:todayISO(), days:S.days, batch:true, minCost:null, done:false,
-    slots:slots.map(s => ({d:s.d, m:s.m, id: s.m === "P" ? (pList.length ? pList[(pb++) % pList.length].id : "porridge-banane") : assign[a++]}))};
-  if (bestS.C > S.budget + 0.01) S.week.minCost = bestS.C;
-  S.checked = {}; S.batchDone = {};
+  const keepP = opt.keepP || {};
+  S.week = {start:opt.start || todayISO(), days:S.batchDays || 5, batch:true, minCost:null, done:false,
+    slots:slots.map(s => ({d:s.d, m:s.m, id: s.m === "P" ? (keepP[s.d] || (pList.length ? pList[(pb++) % pList.length].id : "porridge-banane")) : assign[a++]}))};
+  const tot = weekTotal(); if (tot > S.budget + 0.01) S.week.minCost = tot;
+  if (!opt.keepProgress){ S.checked = {}; S.batchDone = {}; }
   save();
-  return true;
+}
+function batchDishes(){
+  const order = [], counts = {};
+  S.week.slots.forEach(s => { if (s.m === "P") return; if (!(s.id in counts)){ order.push(s.id); counts[s.id] = 0; } counts[s.id]++; });
+  return {order, counts};
+}
+function batchSwapScored(curId){
+  const {order} = batchDishes(), inSet = new Set(order), ids = weekIdx(), base = totalFor(ids, S.people, true);
+  const pos = S.week.slots.map((s, i) => s.id === curId ? i : -1).filter(i => i >= 0);
+  return batchCandidates().filter(r => !inSet.has(r.id)).map(r => {
+    const ids2 = ids.slice(); pos.forEach(i => ids2[i] = r.idx); const t = totalFor(ids2, S.people, true); return {r, t, d:t - base};
+  });
+}
+function openBatchSwap(curId){
+  const cur = RBYID[curId], n = batchDishes().counts[curId] || 0;
+  const scored = batchSwapScored(curId);
+  const fits = scored.filter(x => x.t <= S.budget + 0.01);
+  const src = fits.length >= 6 ? fits : scored.slice().sort((a,b) => a.t - b.t).slice(0, 24);
+  const sugg = shuffleWithSeed(src, UI.swapSeed + curId.length*17).slice(0, 6);
+  let h = '<p class="note" style="margin:0">Actuellement : <b>' + esc(cur ? cur.n : "") + "</b>, prévu pour " + n + " repas. Le plat choisi le remplacera sur tous ces repas.</p>";
+  h += '<div class="search"><label class="sr" for="bsq">Chercher une recette</label>' + ICO.search + '<input class="input" id="bsq" type="search" placeholder="Rechercher un plat qui se conserve" value="' + esc(UI.swapQ) + '" data-in="bsq" autocomplete="off"></div>';
+  h += '<div id="swaplist">' + batchSwapListHTML(curId, sugg, scored, normW(UI.swapQ.trim())) + "</div>";
+  openSheet("Changer ce plat", h, {kind:"bswap", id:curId});
+}
+function batchSwapListHTML(curId, sugg, scored, q){
+  const diff = d => '<span class="delta" style="color:var(' + (d > 0.01 ? "--orange-text" : "--green-text") + ')">' + (d > 0.01 ? "+" : d < -0.01 ? "−" : "±") + eur(Math.abs(d)) + "</span>";
+  let list = sugg, h = "";
+  if (q){
+    list = scored.filter(x => normW(x.r.n).includes(q)).slice(0, 30);
+    h += '<div class="group-h" style="padding-top:4px">' + list.length + " résultat" + (list.length > 1 ? "s" : "") + "</div>";
+  } else h += '<div class="group-h" style="padding-top:4px">Se gardent bien<button class="btn plain sm" data-act="bswapreroll" data-id="' + esc(curId) + '" style="height:auto">' + ICO.dice + "Autres</button></div>";
+  if (!list.length) h += '<div class="group-f">Aucun plat de batch cooking ne correspond. Essaie un autre mot.</div>';
+  else h += '<div class="group">' + list.map(x => { const bi = batchInfo(x.r); return '<button class="rrow" data-act="bswapdo" data-from="' + esc(curId) + '" data-id="' + esc(x.r.id) + '">' + photo(x.r, "mini") +
+       '<div style="min-width:0"><div class="rrow-n">' + esc(x.r.n) + '</div><div class="meta">' + timeLabel(x.r.t) + " · " + (bi.freeze ? "se congèle" : bi.fridge + " j au frigo") + "</div></div>" +
+       '<div style="display:grid;justify-items:end;gap:2px">' + pr(x.r.cost, "/pers.") + diff(x.d) + "</div></button>"; }).join("") + "</div>";
+  if (!q) h += '<div class="group-f">Seuls les plats qui tiennent au frigo ou se congèlent sont proposés. Le montant indique ce que ça change sur tes courses.</div>';
+  return h;
 }
 function batchPlan(){
   const w = S.week; const byId = new Map();
@@ -4065,10 +4110,14 @@ function batchPlan(){
 }
 function viewBatch(){
   let h = '<div class="large fade"><h1>Batch cooking</h1><p>Prépare tous les repas de ta semaine en une seule session, puis réchauffe-les chaque jour en 3 minutes.</p></div>';
+  const bd = S.batchDays || 5;
+  const daysSeg = '<div class="group stag"' + stg(0) + '><div class="cell"><span class="grow" style="white-space:nowrap">Nombre de jours</span><div style="width:180px;flex:none">' + seg("bdays", [[3,"3"],[4,"4"],[5,"5"],[6,"6"],[7,"7"]], bd) + "</div></div></div>" +
+    '<div class="group-f">Repas prévus : ' + ["P","M","S"].filter(m => S.meals[m]).map(m => MEALS[m].toLowerCase()).join(", ") + " (à changer dans les réglages). Au-delà de 3 jours, une partie des plats ira au congélateur.</div>";
   if (!S.week || !S.week.batch){
-    h += '<section class="sum stag"' + stg(0) + '><div class="cap">Le principe</div><div style="display:grid;gap:10px;font-size:15px;line-height:1.45">' +
-      "<span><b>1.</b> L'appli choisit quelques plats qui se gardent bien au frigo ou au congélateur, et les multiplie pour couvrir toute la semaine.</span>" +
-      "<span><b>2.</b> Tu fais les courses en une fois.</span>" +
+    h += daysSeg;
+    h += '<section class="sum stag" style="margin-top:16px"' + stg(1) + '><div class="cap">Le principe</div><div style="display:grid;gap:10px;font-size:15px;line-height:1.45">' +
+      "<span><b>1.</b> L'appli choisit quelques plats qui se gardent bien au frigo ou au congélateur, et les multiplie pour couvrir les jours choisis.</span>" +
+      "<span><b>2.</b> Tu changes les plats qui ne te plaisent pas, puis tu fais les courses en une fois.</span>" +
       "<span><b>3.</b> Un soir ou le dimanche, tu suis le plan pas à pas : tout est cuisiné en même temps, en 2 à 3 heures.</span>" +
       "<span><b>4.</b> Tu ranges tout en boîtes, avec ce qui va au frigo et ce qui va au congélateur.</span></div>" +
       '<button class="btn primary block" data-act="batchgen">' + ICO.dice + "Créer ma semaine batch cooking</button>" +
@@ -4081,8 +4130,20 @@ function viewBatch(){
   const est = Math.round((Math.max(maxT, sumT*0.6) + 20)/5)*5;
   const done = S.batchDone || {};
   const ck = (key, inner) => '<button class="bcheck' + (done[key] ? " done" : "") + '" data-act="bdone" data-k="' + esc(key) + '"><span class="check">' + ICO.check + "</span><span>" + inner + "</span></button>";
-  h += '<section class="sum stag"' + stg(0) + '><div class="facts" style="background:none;padding:0"><div class="fact"><span>Plats</span><b>' + dishes.length + '</b></div><div class="fact"><span>Repas</span><b>' + nMain + '</b></div><div class="fact"><span>Durée</span><b>≈ ' + timeLabel(est) + "</b></div></div>" +
-       '<div class="links"><button class="btn sm" data-act="tab" data-tab="list">' + ICO.cart + 'Courses</button><button class="btn sm" data-act="batchgen-ask">' + ICO.dice + "Autres plats</button></div></section>";
+  const total = weekTotal(), over = total > S.budget + 0.01;
+  h += daysSeg;
+  // Les plats de la semaine, en haut
+  h += '<div class="group-h stag"' + stg(1) + ">Tes plats de la semaine<b>" + eur(total) + "</b></div><div class=\"group stag\"" + stg(2) + ">";
+  for (const x of dishes){
+    const days = x.slots.map(sl => cap(dayDate(w.start, sl.d).toLocaleDateString("fr-FR",{weekday:"short"}).replace(".","")) + " " + MEALS[sl.m].toLowerCase()).join(", ");
+    h += '<div class="meal' + (UI.pop === x.r.id ? " pop" : "") + '" role="button" tabindex="0" data-act="open" data-id="' + esc(x.r.id) + '">' + photo(x.r, "thumb") +
+         '<div style="min-width:0"><div class="meal-k">' + x.slots.length + " repas" + (x.info.freeze ? " · se congèle" : " · " + x.info.fridge + " j au frigo") + '</div><div class="meal-n">' + esc(x.r.n) + '</div><div class="meta">' + esc(days) + "</div></div>" +
+         '<div class="side">' + pr(x.r.cost, "/pers.") + '<button class="swap" data-act="bswap" data-id="' + esc(x.r.id) + '" aria-label="Changer ce plat">' + ICO.swap + "</button></div></div>";
+  }
+  h += "</div>";
+  h += '<div class="group-f">' + (over ? '<span class="bad-txt">Dépasse ton budget de ' + eur(total - S.budget) + ".</span> " : "Dans ton budget de " + eur(S.budget) + ". ") + "Touche ⇄ pour changer un plat qui ne te plaît pas.</div>";
+  h += '<section class="sum stag" style="margin-top:16px"' + stg(3) + '><div class="facts" style="background:none;padding:0"><div class="fact"><span>Plats</span><b>' + dishes.length + '</b></div><div class="fact"><span>Repas</span><b>' + nMain + '</b></div><div class="fact"><span>Session</span><b>≈ ' + timeLabel(est) + "</b></div></div>" +
+       '<div class="links"><button class="btn sm" data-act="tab" data-tab="list">' + ICO.cart + 'Courses</button><button class="btn sm" data-act="batchgen-ask">' + ICO.dice + "Tout changer</button></div></section>";
   // 1. Matériel
   h += '<div class="group-h stag"' + stg(1) + '>1 · Avant de commencer</div><div class="group stag"' + stg(2) + ">" +
        ck("mat-boites", "<b>" + nMain + " boîtes hermétiques</b> (une par repas" + (S.people > 1 ? ", " + S.people + " portions chacune" : "") + "), idéalement en verre, qui vont au micro-ondes") +
@@ -4133,7 +4194,28 @@ const EXTRA_ACTIONS = {
   },
   "batchgen-go": () => { closeSheet(); EXTRA_ACTIONS.batchgen(); },
   bdone: el => { S.batchDone = S.batchDone || {}; const k = el.dataset.k; if (S.batchDone[k]) delete S.batchDone[k]; else { S.batchDone[k] = 1; buzz(6); } save(); el.classList.toggle("done", !!S.batchDone[k]); },
-  "bdone-reset": () => { S.batchDone = {}; save(); const y = SC().scrollTop; render(); SC().scrollTop = y; }
+  "bdone-reset": () => { S.batchDone = {}; save(); const y = SC().scrollTop; render(); SC().scrollTop = y; },
+  bdays: el => {
+    segPick(el); const d = +el.dataset.k; if (d === (S.batchDays || 5)) return;
+    S.batchDays = d; save(); buzz(6);
+    if (S.week && S.week.batch){
+      const keep = batchDishes().order;
+      setTimeout(() => { if (generateBatchWeek(keep)){ UI.lastTotal = null; const y = SC().scrollTop; render(); SC().scrollTop = y; toast("Batch cooking sur " + d + " jours"); } }, 220);
+    }
+  },
+  bswap: el => { UI.swapQ = ""; openBatchSwap(el.dataset.id); },
+  bswapreroll: el => { UI.swapSeed++; openBatchSwap(el.dataset.id); },
+  bswapdo: el => {
+    const from = el.dataset.from, to = el.dataset.id, r = RBYID[to]; if (!r) return;
+    const {order, counts} = batchDishes();
+    const set = order.map(id => RBYID[id === from ? to : id]).filter(Boolean);
+    const cnt = order.map(id => counts[id]);
+    const keepP = {}; S.week.slots.forEach(s => { if (s.m === "P") keepP[s.d] = s.id; });
+    fillBatchWeek(set, cnt, S.week.slots.map(s => ({d:s.d, m:s.m})), {keepP, start:S.week.start, keepProgress:true});
+    if (S.batchDone) for (const k in S.batchDone) if (k.startsWith("st-" + from + "-") || k.startsWith("box-") || k.startsWith("mp-")) delete S.batchDone[k];
+    save(); UI.pop = to; closeSheet(); const y = SC().scrollTop; render(); SC().scrollTop = y;
+    toast("Remplacé par : " + r.n);
+  }
 };
 
 /* ════════════ Minuteur de cuisine ════════════ */
@@ -4698,6 +4780,11 @@ document.addEventListener("input", e => {
     UI.swapQ = el.value; const slot = sheetState.slot;
     if (!UI.swapQ.trim()){ openSwap(slot); const n = $("#sq"); if (n) n.focus(); return; }
     $("#swaplist").innerHTML = swapListHTML(slot, [], swapScored(slot, true), normW(UI.swapQ.trim())); hydrate();
+  }
+  else if (k === "bsq"){
+    UI.swapQ = el.value; const id = sheetState && sheetState.id; if (!id) return;
+    if (!UI.swapQ.trim()){ openBatchSwap(id); const n = $("#bsq"); if (n) n.focus(); return; }
+    $("#swaplist").innerHTML = batchSwapListHTML(id, [], batchSwapScored(id), normW(UI.swapQ.trim())); hydrate();
   }
   else if (k === "sb"){ const v = parseFloat(el.value); if (v > 0){ S.budget = v; save(); render(); } }
   else if (k === "obb"){ const v = parseFloat(el.value); if (v > 0){ S.budget = v; save(); const f = $("#feas"); if (f) f.innerHTML = feasHTML(); } }
