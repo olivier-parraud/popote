@@ -149,4 +149,4 @@ NR(["mug-cake","Mug cake au chocolat","☕","us","",1,5,"d",
   "Passe au micro-ondes 1 minute à pleine puissance : le gâteau gonfle et le dessus doit être juste pris.",
   "Laisse reposer 1 minute avant de déguster, c'est très chaud."],
  ["Chaque micro-ondes est différent : commence par 50 secondes, puis ajoute 10 secondes si besoin."],
- "À manger tout de suite.", "en:Mug cake|fr:Mug cake");
+ "À manger tout de suite.", "en:Chocolate cake|fr:Gâteau au chocolat");

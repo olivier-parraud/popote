@@ -186,7 +186,7 @@ NR(["tofu-braise","Tofu braisé à la coréenne","🍱","kr","MS",1,20,"",
   "Verse la sauce, ajoute les oignons nouveaux et laisse réduire 4 minutes en arrosant le tofu.",
   "Termine par l'huile de sésame et sers avec le riz."],
  ["Bien sécher le tofu, c'est la clé pour qu'il dore au lieu de bouillir."],
- "3 jours au frigo.", "en:Dubu-jorim|en:Tofu");
+ "3 jours au frigo.", "ko:두부조림|en:Tofu");
 
 // ───────── Viêt Nam & Chine ─────────
 NR(["pho","Phở express au bœuf","🍜","as","S",2,35,"p",
@@ -221,7 +221,7 @@ NR(["tofu-brocoli","Tofu sauté, brocoli & sauce cacahuète","🥦","as","S",1,2
   "Dans le bol, délaye le beurre de cacahuète avec la sauce soja, le jus du citron vert, l'ail râpé et 3 cuillères d'eau chaude.",
   "Ajoute le brocoli dans la poêle, verse la sauce et mélange 1 minute. Sers sur le riz."],
  ["La fécule, c'est ce qui rend le tofu croustillant comme au restaurant."],
- "3 jours au frigo.", "en:Tofu|en:Peanut sauce");
+ "3 jours au frigo.", "en:Peanut sauce|en:Tofu");
 
 NR(["soupe-nouilles","Soupe de nouilles au poulet & gingembre","🍜","as","MS",1,20,"",
  [["nouilles",60],["poulet",80],["gingembre",8],["bouillon",1],["legumes_wok",80],["sauce_soja",10],["cebette",0.15]]],

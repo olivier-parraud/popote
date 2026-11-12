@@ -122,7 +122,7 @@ NR(["galettes-avoine-legumes","Galettes d'avoine aux légumes","🥕","fr","MS",
   "Fais-les dorer dans l'huile 4 minutes de chaque côté à feu moyen.",
   "Sers avec le yaourt salé et poivré, et la salade."],
  ["Une façon maline de finir les légumes du frigo : poireau, poivron, chou…"],
- "2 jours au frigo.", "en:Vegetable fritter|en:Oatmeal");
+ "2 jours au frigo.", "en:Fritter|en:Vegetable fritter");
 
 NR(["soupe-chou","Soupe paysanne au chou","🥬","fr","MS",1,40,"",
  [["chou",150],["pdt",120],["carotte",80],["oignon",0.5],["bouillon",0.5],["thym",0.3],["baguette",0.25],["emmental",20]]],
@@ -201,7 +201,7 @@ NR(["tartines-chevre-miel","Tartines chaudes chèvre-miel & salade","🍯","fr",
   "Passe sous le gril 4 à 5 minutes, jusqu'à ce que le chèvre soit doré et fondant.",
   "Assaisonne la salade avec l'huile, le vinaigre, sel et poivre, et ajoute les noix. Sers avec les tartines chaudes."],
  ["Surveille le gril : ça passe de doré à brûlé en 30 secondes."],
- "À manger tout de suite.", "en:Goat cheese|fr:Salade de chèvre chaud");
+ "À manger tout de suite.", "fr:Salade de chèvre chaud|en:Goat cheese");
 
 NR(["tuna-melt","Tuna melt, croque au thon","🥪","us","M",1,15,"",
  [["pain_mie",70],["thon",70],["mayo",15],["oignon_r",0.15],["cheddar",30],["beurre",8],["salade",0.2]]],

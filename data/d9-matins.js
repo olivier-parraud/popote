@@ -74,7 +74,7 @@ NR(["tamagoyaki","Omelette roulée japonaise","🍳","jp","PM",2,15,"",
   "Roule à nouveau autour du premier rouleau. Recommence avec le reste.",
   "Laisse reposer 2 minutes sur une planche, puis coupe en tranches épaisses."],
  ["Le feu ne doit pas être trop fort : l'œuf doit rester jaune, sans coloration.","Un rouleau imparfait ? Serre-le dans un torchon propre 2 minutes, il prend une jolie forme."],
- "1 jour au frigo, à manger froid.", "en:Tamagoyaki|fr:Tamagoyaki");
+ "1 jour au frigo, à manger froid.", "en:Omelette|fr:Omelette");
 
 NR(["smoothie-bowl","Smoothie bowl aux fruits rouges","🍓","us","P",1,10,"n",
  [["fruits_rouges",100],["banane",1],["yaourt",1],["granola",30],["miel",5]]],

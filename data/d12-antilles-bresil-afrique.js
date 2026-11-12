@@ -9,7 +9,7 @@ NR(["accras","Accras de poisson & sauce chien","🐟","an","MS",2,40,"xp",
   "Fais frire des petites cuillerées de pâte 3 à 4 minutes, en les retournant, jusqu'à ce qu'elles soient bien dorées. Égoutte-les.",
   "Sauce chien : mélange le reste d'oignons nouveaux et de persil avec le jus du citron vert, 3 cuillères d'eau chaude, sel et un filet d'huile. Sers avec la salade."],
  ["Ne remplis jamais la casserole d'huile à plus d'un tiers, et ne la quitte pas des yeux.","Traditionnellement, c'est de la morue dessalée : le colin est plus simple et moins cher."],
- "À manger tout de suite.", "en:Accra (food)|fr:Acra");
+ "À manger tout de suite.", "fr:Acras|en:Fritter");
 
 NR(["riz-pois-rouges","Riz aux pois rouges à la créole","🍛","an","MS",1,35,"",
  [["riz",80],["haricot_rouge",120],["lait_coco",60],["oignon",0.5],["ail",1],["thym",0.3],["piment",0.2],["huile",8]]],
@@ -65,7 +65,7 @@ NR(["gratin-patate-douce","Gratin de patate douce coco","🍠","an","S",1,50,"",
   "Range les rondelles dans le plat en les faisant se chevaucher, et verse le lait de coco chaud par-dessus.",
   "Parsème de fromage et enfourne 40 minutes, jusqu'à ce que la pointe d'un couteau s'enfonce sans résistance."],
  ["Parfait avec un poisson grillé ou un colombo."],
- "3 jours au frigo.", "en:Sweet potato|en:Gratin");
+ "3 jours au frigo.", "en:Gratin|fr:Gratin");
 
 NR(["colombo-legumes","Colombo de légumes & pois chiches","🍛","an","MS",1,40,"",
  [["patate_douce",150],["courgette",120],["pois_chiche",100],["lait_coco",100],["colombo_ep",4],["oignon",0.5],["ail",1],["citron_vert",0.25],["riz",70],["huile",10]]],
@@ -193,7 +193,7 @@ NR(["alloco-poisson","Alloco & poisson à la sauce tomate","🐟","af","S",2,40,
   "Dépose le poisson dans la sauce, couvre et laisse cuire 8 minutes.",
   "Sers le poisson avec sa sauce et l'alloco."],
  ["L'alloco est le snack de rue préféré d'Abidjan : tu peux aussi le servir avec un œuf au plat."],
- "1 jour au frigo.", "en:Alloco|fr:Aloko");
+ "1 jour au frigo.", "fr:Alloco|en:Cooking banana");
 
 NR(["chakalaka","Chakalaka, haricots aux légumes épicés","🫘","af","MS",1,30,"",
  [["haricot_blanc",150],["carotte",80],["poivron",0.5],["oignon",0.5],["tomate_boite",120],["curry",2],["ail",1],["piment",0.2],["huile",10],["riz",60]]],
@@ -236,4 +236,4 @@ NR(["ndambe","Ndambé, ragoût de haricots du Sénégal","🫘","af","MS",1,35,"
   "Ajoute les haricots égouttés et laisse mijoter 10 minutes, en écrasant un peu pour épaissir.",
   "Sers dans la baguette, comme à Dakar, ou dans une assiette avec le pain à côté."],
  ["C'est le petit-déjeuner populaire des Sénégalais, mais il fait un excellent dîner."],
- "4 jours au frigo.", "en:Ndambé|fr:Ndambé");
+ "4 jours au frigo.", "en:Baked beans|en:Black-eyed pea");

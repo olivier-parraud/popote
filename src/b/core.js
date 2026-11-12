@@ -342,6 +342,8 @@ function timeLabel(t){ return t >= 60 ? Math.floor(t/60) + " h" + (t%60 ? String
 const PHKEY = "popote.photos.v2";
 let PH = {};
 try { PH = JSON.parse(localStorage.getItem(PHKEY)) || {}; } catch(e) {}
+// Photos corrigées : on oublie l'ancienne trouvaille une seule fois
+try { if (localStorage.getItem("biscuit.phfix") !== "1"){ ["tamagoyaki","tofu-braise","keftedes","gratin-patate-douce","accras","alloco-poisson","tartines-chevre-miel","mug-cake","ndambe","galettes-avoine-legumes","tofu-brocoli"].forEach(id => delete PH[id]); savePH(); localStorage.setItem("biscuit.phfix", "1"); } } catch(e) {}
 let phBusy = false, phDead = false;
 const phWant = new Set();
 function savePH(){ try { localStorage.setItem(PHKEY, JSON.stringify(PH)); } catch(e) {} }

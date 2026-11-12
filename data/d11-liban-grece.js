@@ -109,7 +109,7 @@ NR(["keftedes","Keftedes, boulettes grecques à la menthe","🧆","gr","S",2,35,
   "Fais-les dorer dans l'huile 8 à 10 minutes en les retournant.",
   "Râpe le concombre, presse-le et mélange-le au yaourt grec avec du sel : c'est le tzatziki. Sers avec les pommes de terre."],
  ["Le pain trempé, c'est ce qui rend les boulettes moelleuses."],
- "3 jours au frigo, 3 mois au congélateur (boulettes cuites).", "en:Keftedes|en:Meatball");
+ "3 jours au frigo, 3 mois au congélateur (boulettes cuites).", "fr:Boulette de viande|en:Meatball");
 
 NR(["briam","Briam, légumes rôtis à la grecque","🍅","gr","S",1,60,"",
  [["pdt",150],["courgette",150],["tomate",150],["oignon_r",0.5],["ail",1],["origan",0.5],["huile_olive",20],["feta",40]]],
