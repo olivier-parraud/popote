@@ -228,7 +228,12 @@ function parseTicket(text){
   for (let j = 0; j < rows.length; j++){
     const raw = rows[j];
     if (TK_SKIP.test(raw)) continue;
-    const m = raw.match(/^(.*?[A-Za-zÀ-ÿ].*?)\s+(-?\d{1,3}[.,]\d{2})\s*(?:€|eur|[A-D]|\*)?\s*(?:[A-D]|\d)?$/i);
+    // « 2 X 1,15   2,30 » sous le libellé : prix unitaire de la ligne du dessus
+    const ql = raw.match(/^(\d+)\s*[xX*]\s*(\d+[.,]\d{2})/);
+    if (ql && j > 0 && /[A-Za-zÀ-ÿ]{3}/.test(rows[j-1]) && !/\d[.,]\d{2}\s*\S{0,3}\s*$/.test(rows[j-1]) && !TK_SKIP.test(rows[j-1])){
+      out.push({raw:rows[j-1] + " · " + raw, name:rows[j-1].replace(/^\d+\s+/, ""), price:parseFloat(ql[2].replace(",", ".")), perKg:0}); continue;
+    }
+    const m = raw.match(/^(.*?[A-Za-zÀ-ÿ].*?)\s+(-?\d{1,3}[.,]\d{2})\s*(?:€|eur)?(?:\s*(?:[A-Za-zÀ-ÿ*]{1,2}|\d{1,2})){0,2}\s*$/i);
     if (!m) continue;
     let name = m[1].replace(/\s+\d+\s*[xX*]\s*\d+[.,]\d{2}.*$/, "").trim(), price = parseFloat(m[2].replace(",", "."));
     if (!(price > 0) || price > 80) continue;
