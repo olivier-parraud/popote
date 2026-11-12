@@ -1,13 +1,14 @@
 {
-  "name": "Popote",
-  "short_name": "Popote",
+  "name": "Biscuit",
+  "short_name": "Biscuit",
   "description": "Tes repas de la semaine, dans ton budget.",
   "lang": "fr",
+  "id": "./",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
-  "background_color": "#F2F2F7",
-  "theme_color": "#F2F2F7",
+  "background_color": "#2E7A4C",
+  "theme_color": "#FFFFFF",
   "icons": [
     {
       "src": "icon-192.png",
@@ -20,7 +21,7 @@
       "type": "image/png"
     },
     {
-      "src": "icon-512.png",
+      "src": "icon-maskable.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "maskable"
