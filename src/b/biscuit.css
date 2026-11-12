@@ -55,6 +55,7 @@ svg{flex:none}
 #scroller{position:absolute;inset:0;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;overscroll-behavior-y:contain;scroll-padding-top:70px}
 .view{padding:calc(var(--safe-t) + 14px) var(--gut) calc(var(--safe-b) + 128px);max-width:640px;margin:0 auto;display:flex;flex-direction:column;gap:20px;min-height:100%}
 .view.wide{max-width:1120px}
+.two,.two > div{display:flex;flex-direction:column;gap:20px}
 .topbar{position:fixed;left:0;right:0;top:0;z-index:30;padding:var(--safe-t) var(--gut) 0;height:calc(var(--safe-t) + 52px);display:flex;align-items:center;justify-content:center;
   background:color-mix(in srgb,var(--bg) 78%,transparent);-webkit-backdrop-filter:saturate(180%) blur(20px);backdrop-filter:saturate(180%) blur(20px);
   border-bottom:.5px solid transparent;opacity:0;transform:translateY(-8px);pointer-events:none;transition:opacity .25s var(--ease),transform .35s var(--ease),border-color .25s}

@@ -1,7 +1,7 @@
 // Construit Biscuit : page d'artefact, fichier autonome et appli installable (PWA)
 const fs = require('fs'), path = require('path');
 const R = p => fs.readFileSync(path.join(__dirname, p), 'utf8');
-const VERSION = '2.0.2', CACHE = 'biscuit-v1';
+const VERSION = '2.0.3', CACHE = 'biscuit-v1';
 const DATA = ['ingredients.js','r1-matin.js','r2-france.js','r3-italie-inde.js','r4-asie-mexique.js','r5-monde.js','r6-plus.js']
   .concat(fs.readdirSync(path.join(__dirname, 'data')).filter(f => /^r[7-9]-.*\.js$/.test(f)).sort())
   .concat(['photos.js','d1-matin.js','d2-france-a.js','d3-france-b.js','d4-italie.js','d5-inde.js','d6-asie.js','d7-mexique-orient.js','d8-med-us-afrique.js'])
