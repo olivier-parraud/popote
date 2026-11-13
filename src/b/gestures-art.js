@@ -344,36 +344,42 @@ const GART = (() => {
       ".gx-" + k + " .fl{transform-origin:50% 50%}" + an(k, ".fl", "F", 1.8, "ease-out") + kf(k, "F", "0%,40%{opacity:0;transform:scale(.3)}55%{opacity:.8}100%{opacity:0;transform:scale(2.4) translateY(-6px)}")};
 
   /* 21 · Rouler */
-  const WRAP = [["Garnir",0,20],["Replier",20,40],["Rabattre",40,60],["Rouler",60,92]];
+  const WRAP = [["Garnir",0,16],["Replier",16,32],["Rabattre",32,52],["Rouler",52,94]];
   A.rouler = {t:"Rouler un wrap", v:"comment rouler un wrap", c:["#E2EFE3","#F5FBF5"],
-    d: k => '<defs><clipPath id="' + k + '-c"><rect x="124" y="0" width="72" height="128"/></clipPath><clipPath id="' + k + '-s"><rect x="0" y="0" width="320" height="128"/></clipPath></defs>' +
-      table(182, "#E6D2AE") + chips(k, WRAP) +
-      g("fl", '<circle cx="160" cy="106" r="64" fill="#F1D9A5" clip-path="url(#' + k + '-c)"/>' +
-        g("fr", '<path d="M196 53.1A64 64 0 0 1 196 158.9Z" fill="#E2BE7E" clip-path="url(#' + k + '-s)"/><path d="M196 56V128" stroke-dasharray="4 4" stroke-width="1.6"/>') +
-        g("fL", '<path d="M124 53.1A64 64 0 0 0 124 158.9Z" fill="#E2BE7E" clip-path="url(#' + k + '-s)"/><path d="M124 56V128" stroke-dasharray="4 4" stroke-width="1.6"/>') +
-        '<g stroke="none"><circle cx="138" cy="84" r="2.6" fill="#D9B06A"/><circle cx="184" cy="92" r="2.2" fill="#D9B06A"/><circle cx="150" cy="70" r="2" fill="#D9B06A"/></g>' +
-        g("fi", '<rect x="124" y="100" width="72" height="12" rx="6" fill="#6BBF59"/><rect x="128" y="108" width="64" height="9" rx="4.5" fill="#B5652C"/><circle cx="140" cy="102" r="4" fill="#E8483A"/><circle cx="168" cy="101" r="4" fill="#E8483A"/>') +
-        g("fb", '<path d="M100.6 128A64 64 0 0 0 219.4 128Z" fill="#E2BE7E"/><path d="M102 128H218" stroke-dasharray="4 4" stroke-width="1.6"/>')) +
-      '<g class="fa1" stroke="#2E7A4C" stroke-width="3.2" fill="none"><path d="M160 164V124"/><path d="M151 133L160 122L169 133"/></g><g class="fa2" stroke="#2E7A4C" stroke-width="3.2" fill="none"><path d="M240 96H206"/><path d="M215 87L204 96L215 105"/><path d="M80 96H114"/><path d="M105 87L116 96L105 105"/></g>' +
-      g("bu", '<g transform="rotate(-8 160 112)"><rect x="96" y="92" width="128" height="40" rx="20" fill="#F1D9A5"/><path d="M110 100Q160 92 210 100" stroke="#fff" stroke-opacity=".5" stroke-width="4" fill="none"/><ellipse cx="222" cy="112" rx="10" ry="20" fill="#F6E6C2"/><circle cx="220" cy="106" r="3.6" fill="#6BBF59"/><circle cx="224" cy="115" r="3.4" fill="#B5652C"/><circle cx="219" cy="120" r="2.6" fill="#E8483A"/></g>'),
-    css: k => chipsCss(k, WRAP, 6) +
-      ".gx-" + k + " .fa1,.gx-" + k + " .fa2{opacity:0}" + an(k, ".fa1", "A1", 6, "linear") + kf(k, "A1", "0%,20%{opacity:0;transform:translateY(8px)}24%{opacity:1;transform:none}34%{opacity:1}38%,100%{opacity:0}") + an(k, ".fa2", "A2", 6, "linear") + kf(k, "A2", "0%,40%{opacity:0}44%,54%{opacity:1}58%,100%{opacity:0}") + an(k, ".fi", "I", 6, "linear") + kf(k, "I", "0%{opacity:0;transform:translateY(-24px)}3%{opacity:0;transform:translateY(-24px);animation-timing-function:" + EO + "}12%,100%{opacity:1;transform:none}") +
-      an(k, ".fb", "B", 6, "linear", "transform-origin:50% 0") + kf(k, "B", "0%,22%{transform:scaleY(1)}23%{transform:scaleY(1);animation-timing-function:" + E + "}38%,100%{transform:scaleY(-1)}") +
-      an(k, ".fL", "L", 6, "linear", "transform-origin:100% 50%") + kf(k, "L", "0%,42%{transform:scaleX(1)}43%{transform:scaleX(1);animation-timing-function:" + E + "}58%,100%{transform:scaleX(-1)}") +
-      an(k, ".fr", "R", 6, "linear", "transform-origin:0 50%") + kf(k, "R", "0%,42%{transform:scaleX(1)}43%{transform:scaleX(1);animation-timing-function:" + E + "}58%,100%{transform:scaleX(-1)}") +
-      an(k, ".fl", "F", 6, "linear") + kf(k, "F", "0%,60%{opacity:1;transform:none}61%{opacity:1;transform:none;animation-timing-function:" + EI + "}70%{opacity:0;transform:scale(.7,.4)}100%{opacity:0;transform:scale(.7,.4)}") +
-      an(k, ".bu", "U", 6, "linear") + kf(k, "U", "0%,64%{opacity:0;transform:scale(.6,.5)}74%{opacity:1;transform:none;animation-timing-function:" + EO + "}94%{opacity:1;transform:none}100%{opacity:0}")};
-  const MAKI = [["Garnir",0,22],["Rouler",22,70],["Couper",70,95]];
-  A.rouler_b = {t:"Rouler des makis", v:"comment rouler des makis", c:["#E2EFE3","#F5FBF5"],
-    d: k => table(184, "#E6D2AE") + chips(k, MAKI) + '<rect x="70" y="44" width="180" height="134" rx="6" fill="#D9C28A"/>' + [54,64,74,84,94,104,114,124,134,144,154,164,174].map(y => '<path d="M71 ' + y + 'H249" stroke="#B89A5C" stroke-width="1.6"/>').join("") +
-      g("sh", '<rect x="90" y="50" width="140" height="112" rx="3" fill="#2F4A35"/><rect x="94" y="62" width="132" height="98" rx="3" fill="#FBF6EC"/>' + g("fi", '<rect x="94" y="132" width="132" height="10" rx="5" fill="#F08A5C"/><rect x="94" y="142" width="132" height="8" rx="4" fill="#6BBF59"/>')) +
-      g("rl", '<rect x="88" y="0" width="144" height="30" rx="8" fill="#2F4A35"/><path d="M96 8H224M96 22H224" stroke="#4E6B54" stroke-width="2"/>', T(0, 140)) +
-      g("cut", [100,134,168,202].map(x => '<g' + T(x + 8, 110) + '><circle r="16" fill="#2F4A35"/><circle r="12" fill="#FBF6EC" stroke-width="1.4"/><circle cx="-2" r="5" fill="#F08A5C" stroke-width="1.2"/><circle cx="4" cy="3" r="3" fill="#6BBF59" stroke-width="1.2"/></g>').join("")),
-    css: k => chipsCss(k, MAKI, 6) +
-      an(k, ".fi", "I", 6, "linear") + kf(k, "I", "0%{opacity:0}3%{opacity:0;transform:translateY(-20px);animation-timing-function:" + EO + "}12%,100%{opacity:1;transform:none}") +
-      ".gx-" + k + " .rl{opacity:0}" + an(k, ".rl", "R", 6, "linear") + kf(k, "R", "0%,21%{opacity:0;transform:translate(0,140px)}22%{opacity:1;transform:translate(0,140px);animation-timing-function:" + E + "}66%{opacity:1;transform:translate(0,52px)}70%,100%{opacity:0;transform:translate(0,52px)}") +
-      an(k, ".sh", "S", 6, "linear", "transform-origin:50% 0") + kf(k, "S", "0%,22%{opacity:1;transform:scaleY(1);animation-timing-function:" + E + "}66%{opacity:1;transform:scaleY(.08)}70%,100%{opacity:0;transform:scaleY(.08)}") +
-      ".gx-" + k + " .cut{opacity:0}" + an(k, ".cut", "C", 6, "linear") + kf(k, "C", "0%,70%{opacity:0;transform:scale(.6)}78%{opacity:1;transform:none;animation-timing-function:" + EO + "}95%{opacity:1}100%{opacity:0}")};
+    d: k => {
+      const TW = "#F1D9A5", UND = "#E0B978";
+      const up = '<path d="M100.7 132A64 64 0 1 1 219.3 132Z" fill="' + TW + '"/><g stroke="none" fill="#D9B06A"><circle cx="138" cy="70" r="2.6"/><circle cx="184" cy="80" r="2.2"/><circle cx="112" cy="104" r="2"/><circle cx="206" cy="112" r="2.4"/><circle cx="160" cy="58" r="2"/></g>';
+      const flap = g("fb", '<path d="M100.7 132A64 64 0 0 0 219.3 132Z" fill="' + UND + '"/>' + g("fbp", '<path d="M100.7 132A64 64 0 0 0 219.3 132Z" fill="' + TW + '"/><circle cx="150" cy="150" r="2.2" fill="#D9B06A" stroke="none"/>'));
+      const strip = (id, inner) => '<g clip-path="url(#' + k + '-' + id + ')">' + inner + "</g>";
+      const under = '<path d="M100.7 132A64 64 0 1 1 219.3 132Z" fill="' + UND + '"/>';
+      return '<defs><clipPath id="' + k + '-L"><rect x="0" y="0" width="124" height="200"/></clipPath><clipPath id="' + k + '-C"><rect x="124" y="0" width="72" height="200"/></clipPath><clipPath id="' + k + '-R"><rect x="196" y="0" width="124" height="200"/></clipPath></defs>' +
+        table(182, "#E6D2AE") + chips(k, WRAP) +
+        g("pk", g("env",
+          strip("C", up + g("fi", '<rect x="130" y="112" width="60" height="11" rx="5.5" fill="#6BBF59"/><rect x="132" y="119" width="56" height="9" rx="4.5" fill="#B5652C"/><circle cx="144" cy="113" r="3.6" fill="#E8483A"/><circle cx="170" cy="112" r="3.6" fill="#E8483A"/>') + flap) +
+          g("sL", strip("L", up + flap + g("un", under))) +
+          g("sR", strip("R", up + flap + g("un", under))))) +
+        '<path class="hl" d="M98 132H222" stroke="#2E7A4C" stroke-width="2" stroke-dasharray="5 5"/><path class="vl" d="M124 52V134M196 52V134" stroke="#2E7A4C" stroke-width="2" stroke-dasharray="5 5"/>' +
+        '<g class="fa1" stroke="#2E7A4C" stroke-width="3.2" fill="none"><path d="M160 178V140"/><path d="M151 149L160 138L169 149"/></g>' +
+        '<g class="fa2" stroke="#2E7A4C" stroke-width="3.2" fill="none"><path d="M248 96H214"/><path d="M223 87L212 96L223 105"/><path d="M72 96H106"/><path d="M97 87L108 96L97 105"/></g>' +
+        '<g class="fa3" stroke="#2E7A4C" stroke-width="3.2" fill="none"><path d="M222 150Q236 112 214 80"/><path d="M211 92L213 78L226 84"/></g>' +
+        g("lg", g("", '<rect x="-40" y="-15" width="80" height="30" rx="15" fill="' + TW + '"/><path d="M-30-8Q0-13 30-8" stroke="#fff" stroke-opacity=".6" stroke-width="4" fill="none"/><path d="M14-15Q24 0 14 15" stroke-width="1.6" fill="none"/>', T(160, 118)));
+    },
+    css: k => chipsCss(k, WRAP, 8) +
+      an(k, ".pk", "K", 8, "linear") + kf(k, "K", "0%{opacity:0}3%,100%{opacity:1}") +
+      an(k, ".fi", "I", 8, "linear") + kf(k, "I", "0%,4%{opacity:0;transform:translateY(-26px);animation-timing-function:" + EO + "}12%,100%{opacity:1;transform:none}") +
+      an(k, ".fb", "B", 8, "linear", "transform-origin:50% 0") + kf(k, "B", "0%,18%{transform:scaleY(1);animation-timing-function:" + E + "}30%,100%{transform:scaleY(-1)}") +
+      an(k, ".fbp", "Bp", 8, "linear") + kf(k, "Bp", "0%,23.9%{opacity:1}24%,100%{opacity:0}") +
+      ".gx-" + k + " .sL{animation:" + k + "L 8s linear infinite;transform-box:view-box;transform-origin:124px 0}" + kf(k, "L", "0%,34%{transform:scaleX(1);animation-timing-function:" + E + "}48%,100%{transform:scaleX(-1)}") +
+      ".gx-" + k + " .sR{animation:" + k + "R 8s linear infinite;transform-box:view-box;transform-origin:196px 0}" + kf(k, "R", "0%,34%{transform:scaleX(1);animation-timing-function:" + E + "}48%,100%{transform:scaleX(-1)}") +
+      an(k, ".un", "U", 8, "linear") + kf(k, "U", "0%,40.9%{opacity:0}41%,100%{opacity:1}") +
+      ".gx-" + k + " .env{animation:" + k + "En 8s linear infinite;transform-box:view-box;transform-origin:160px 44px}" + kf(k, "En", "0%,54%{transform:scaleY(1);animation-timing-function:" + E + "}74%,100%{transform:scaleY(0)}") +
+      ".gx-" + k + " .lg{opacity:0}" + an(k, ".lg", "G", 8, "linear") + kf(k, "G", "0%,54%{opacity:0;transform:none}55%{opacity:1;transform:none;animation-timing-function:" + E + "}74%{opacity:1;transform:translateY(-60px);animation-timing-function:" + E + "}84%,94%{opacity:1;transform:translateY(-14px) scale(1.3)}100%{opacity:0;transform:translateY(-14px) scale(1.3)}") +
+      ".gx-" + k + " .hl,.gx-" + k + " .vl,.gx-" + k + " .fa1,.gx-" + k + " .fa2,.gx-" + k + " .fa3{opacity:0}" +
+      an(k, ".hl", "Hl", 8, "linear") + kf(k, "Hl", "0%,13%{opacity:0}15%,19%{opacity:1}21%,100%{opacity:0}") +
+      an(k, ".vl", "Vl", 8, "linear") + kf(k, "Vl", "0%,29%{opacity:0}31%,35%{opacity:1}37%,100%{opacity:0}") +
+      an(k, ".fa1", "A1", 8, "linear") + kf(k, "A1", "0%,16%{opacity:0;transform:translateY(8px)}19%{opacity:1;transform:none}27%{opacity:1}30%,100%{opacity:0}") +
+      an(k, ".fa2", "A2", 8, "linear") + kf(k, "A2", "0%,32%{opacity:0}35%,45%{opacity:1}48%,100%{opacity:0}") +
+      an(k, ".fa3", "A3", 8, "linear") + kf(k, "A3", "0%,52%{opacity:0}55%,70%{opacity:1}74%,100%{opacity:0}")};
 
   /* 22 · Brochettes */
   const MEAT = '<rect x="-12" y="-12" width="24" height="24" rx="6" fill="#A85A2A"/><path d="M-7-12L-12-7M3-12L-12 3M12-6L-6 12" stroke="#7A3E1A" stroke-width="2.4"/>';
@@ -382,9 +388,9 @@ const GART = (() => {
   const ZUC = '<ellipse rx="8" ry="13" fill="#4E9A5A"/><ellipse rx="5.6" ry="10" fill="#E6F2CF" stroke-width="1.2"/>';
   A.brochettes = {t:"Monter les brochettes", v:"monter des brochettes", c:["#F5DCC2","#FFF3E6"],
     d: () => table(182) + '<path d="M58 46L262 158" stroke="' + WDD + '" stroke-width="6"/><path d="M58 46L262 158" stroke="' + WD + '" stroke-width="2.4"/><path d="M58 46L50 40" stroke="' + WDD + '" stroke-width="3"/>' +
-      [MEAT, PEP, ONI, MEAT, ZUC, MEAT].map((p, i) => { const d = 210 - i*30, x = 58 + 0.877*d, y = 46 + 0.481*d; return g("pc pc" + i, '<g' + T(x.toFixed(1), y.toFixed(1), 29) + ">" + p + "</g>"); }).join("") +
+      [MEAT, PEP, ONI, MEAT, ZUC, MEAT].map((p, i) => { const d = 190 - i*28, x = 58 + 0.877*d, y = 46 + 0.481*d; return g("pc pc" + i, '<g' + T(x.toFixed(1), y.toFixed(1), 29) + ">" + p + "</g>"); }).join("") +
       hand(GRIP, 262, 158, 29, 0.95),
-    css: k => [0,1,2,3,4,5].map(i => { const d = 210 - i*30; return an(k, ".pc" + i, "C" + i, 5, "linear", "animation-delay:" + (i*0.6 - 5).toFixed(1) + "s") + kf(k, "C" + i, "0%{opacity:0;transform:translate(" + (-(d - 6)*0.877).toFixed(1) + "px," + (-(d - 6)*0.481).toFixed(1) + "px) scale(.4)}4%{opacity:1;transform:translate(" + (-(d - 6)*0.877).toFixed(1) + "px," + (-(d - 6)*0.481).toFixed(1) + "px) scale(1);animation-timing-function:" + E + "}16%,92%{opacity:1;transform:none}100%{opacity:0;transform:none}"); }).join("")};
+    css: k => ".gx-" + k + " .pc{opacity:0}" + [0,1,2,3,4,5].map(i => { const d = 190 - i*28, tx = (-(d - 6)*0.877).toFixed(1) + "px", ty = (-(d - 6)*0.481).toFixed(1) + "px", a = 6 + i*11; return an(k, ".pc" + i, "C" + i, 7, "linear") + kf(k, "C" + i, "0%," + a + "%{opacity:0;transform:translate(" + tx + "," + ty + ") scale(.4)}" + (a + 3) + "%{opacity:1;transform:translate(" + tx + "," + ty + ") scale(1);animation-timing-function:" + E + "}" + (a + 11) + "%,88%{opacity:1;transform:none}94%,100%{opacity:0;transform:none}"); }).join("")};
 
   /* 23 · Laisser reposer */
   A.reposer = {t:"Laisser reposer", v:"laisser reposer ou mariner au frais", c:["#DCE8F7","#F3F8FE"],

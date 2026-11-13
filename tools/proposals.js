@@ -11,22 +11,8 @@ const hands = ['A', 'B'].map(h => '<div class="hcol"><h3>' + (h === 'A' ? 'Main 
   [['revenir', 1], ['fouetter', 15], ['emincer', 7]].map(([k, n]) => '<div class="art sm">' + GA.svg(k, h) + '</div>').join('') + '</div></div>').join('');
 
 const P = [
-  [2, 'verser', 'Ajouter', 'Petits pois, rondelles de carotte et quartiers de tomate glissent du bol dans la cocotte, avec une petite éclaboussure. Plus de carrés.'],
-  [4, 'bouillir', "Cuire à l'eau bouillante", "Les pâtes sortent de l'eau, dans la casserole : le bord avant passe devant elles."],
-  [7, 'emincer', 'Émincer', 'Courgette : la main gauche en griffe tient le légume, le couteau tranche et les rondelles tombent sur la planche.', 'Version A'],
-  [7, 'emincer_b', 'Émincer', 'Oignon : même geste, les lamelles en demi-lune basculent à côté.', 'Version B'],
-  [8, 'melanger', 'Mélanger', 'Plus de carrés : la cuillère tourne dans la sauce et laisse un tourbillon.'],
-  [11, 'reposer', 'Laisser reposer', 'Film étirable bien visible sur le bol, minuteur qui se remplit, flocon pour le frais. Le trait blanc a disparu.'],
-  [12, 'disposer', 'Disposer', 'La main pose les morceaux un par un, bien rangés dans le plat.'],
-  ['12b', 'couches', 'Monter en couches', "Nouveau, pour les lasagnes et gratins : les couches arrivent dans l'ordre et l'étape en cours s'allume en haut.", 'Nouveau'],
-  [13, 'assaisonner', 'Assaisonner', "La main secoue la salière et le sel tombe en pluie sur l'assiette."],
-  [20, 'retourner', 'Retourner', "La crêpe décrit un arc sans s'arrêter en l'air, et retombe côté doré."],
-  [26, 'oeufs', 'Casser les œufs', "Le bol est vide au départ. L'œuf se fêle, s'ouvre, puis le jaune et le blanc tombent."],
-  [27, 'rouler', 'Rouler', 'Wrap : garnir, replier le bas, rabattre les côtés, rouler. Une flèche montre chaque pli.', 'Version A'],
-  [27, 'rouler_b', 'Rouler', 'Makis : la natte enroule la feuille, puis on coupe les tranches.', 'Version B'],
-  [30, 'brochettes', 'Brochettes', 'Viande, poivron, oignon, courgette : chaque morceau glisse le long de la pique.'],
-  [31, 'microondes', 'Au micro-ondes', "L'assiette ne bouge plus. Le minuteur descend de 1:30 à 0:00, puis ça sonne."],
-  [35, 'plier', 'Plier les raviolis', 'Quatre étapes affichées en haut : garnir, mouiller le bord, plier en demi-lune, pincer.'],
+  [27, 'rouler', 'Rouler', "Le bas se replie, puis les deux côtés se rabattent sur toute la hauteur, par-dessus le bas replié. On roule ensuite depuis le bas : le paquet devient un rouleau bien fermé."],
+  [30, 'brochettes', 'Brochettes', "La pique est vide au départ. Les morceaux s'enfilent un par un, puis tout disparaît ensemble avant la boucle suivante."],
 ];
 const cards = P.map(([n, k, t, note, tag]) => card(n, k, t, note, tag)).join('\n');
 
@@ -46,13 +32,10 @@ body.cook .hcol{background:#1A1A18;border-color:#2C2B27;color:#F3F1EA}
 body.cook .tag{background:#2C2B27;color:#F3F1EA}
 </style>
 <div class="wrap">
-<header><span class="kick">Biscuit · mode cuisine</span><h1>Gestes corrigés, à valider</h1><p>Les numéros sont ceux de la première galerie. Les dessins sont plus simples, avec des étapes affichées quand le geste en a plusieurs. Les autres gestes ne changent pas, sauf la main.</p></header>
+<header><span class="kick">Biscuit · mode cuisine</span><h1>Gestes corrigés, à valider</h1><p>Les deux gestes encore à reprendre, avec les numéros de la première galerie.</p></header>
 <div class="bar"><div class="seg" role="group" aria-label="Fond"><button aria-pressed="true" data-bg="light">Fond clair</button><button aria-pressed="false" data-bg="cook">Comme en cuisine</button></div><div class="seg" role="group" aria-label="Vitesse"><button aria-pressed="true" data-sp="1">Vitesse normale</button><button aria-pressed="false" data-sp="0.4">Ralenti</button><button aria-pressed="false" data-sp="0">Pause</button></div></div>
-<h2 class="sec">1 · La main</h2>
-<p class="sub">Main refaite : poing qui serre vraiment le manche, doigts arrondis, plus de manche vert. Choisis A ou B : elle sera la même dans les 35 gestes.</p>
-<section class="hands">${hands}</section>
-<h2 class="sec">2 · Les gestes repris</h2>
-<p class="sub">Dessinés ici avec la main A. Pour Émincer et Rouler, deux versions : garde celle que tu préfères.</p>
+<h2 class="sec">Deuxième essai</h2>
+<p class="sub">Main A partout, Émincer en version A. Les autres gestes sont validés et ne bougent plus.</p>
 <section class="grid">
 ${cards}
 </section>
