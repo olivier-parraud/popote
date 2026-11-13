@@ -23,21 +23,29 @@ const GART = (() => {
   const drop = (x, y, c, cls, i) => '<path class="' + cls + '" style="animation-delay:-' + (i*0.35).toFixed(2) + 's" d="M' + x + " " + y + 'c-3 4-5 7-3 10c2 2 4 2 6 0c2-3 0-6-3-10Z" fill="' + c + '" stroke-width="1.4"/>';
 
   /* ── Mains et ustensiles (coordonnées locales) ── */
-  // Main droite qui serre un manche horizontal centré en (0,0) ; le bras part vers la droite
-  const GRIP = '<path d="M10-18L230-60L236-10L14 16Z" fill="' + CUF + '"/><path d="M10-18L21-21L25 15L14 16Z" fill="' + CUFD + '"/>' +
-    '<path d="M-18-10C-18-20-6-24 6-22C16-20 20-14 20-6V6C20 13 12 16 2 16C-10 16-18 10-18 2Z" fill="' + SK + '"/>' +
-    '<rect x="-20" y="2" width="9.5" height="16" rx="4.7" fill="' + SK + '"/><rect x="-11" y="3" width="9.5" height="16" rx="4.7" fill="' + SK + '"/><rect x="-2" y="3" width="9.5" height="15" rx="4.7" fill="' + SK + '"/><rect x="7" y="2" width="9" height="13" rx="4.5" fill="' + SK + '"/>' +
-    '<path d="M0-17C-9-22-23-20-26-13C-27-8-22-6-17-8L-3-11Z" fill="' + SKL + '"/>';
-  // Main gauche en griffe : bout des doigts repliés en (0,0), bras vers le haut à gauche
-  const CLAW = '<path d="M-30-30L-180-150L-210-100L-46 0Z" fill="' + CUF + '"/><path d="M-30-30L-39-36L-55-4L-46 0Z" fill="' + CUFD + '"/>' +
-    '<path d="M-40-22C-42-34-28-40-14-36C0-32 10-20 8-8C7 4-4 10-16 8C-30 6-40-6-40-22Z" fill="' + SK + '"/>' +
-    '<rect x="-2" y="-24" width="16" height="10" rx="5" fill="' + SK + '"/><rect x="2" y="-14" width="16" height="10" rx="5" fill="' + SK + '"/><rect x="2" y="-4" width="15" height="10" rx="5" fill="' + SK + '"/>' +
-    '<path d="M-30-28C-24-32-14-31-8-27" fill="none" stroke="' + SKL + '" stroke-width="2.6"/>';
-  // Paume posée à plat (vue de côté), doigts vers la gauche, bras vers le haut à droite ; appui en (0,0)
-  const PALM = '<path d="M14-22L160-110L190-70L26 8Z" fill="' + CUF + '"/><path d="M14-22L24-27L34 3L26 8Z" fill="' + CUFD + '"/>' +
-    '<path d="M-34-2C-36-10-30-14-22-14H6C14-24 26-22 28-10C30 0 22 6 12 6H-28C-32 6-34 2-34-2Z" fill="' + SK + '"/>' +
-    '<path d="M-26-6H2M-24 0H4" stroke="#DDA27C" stroke-width="1.4" fill="none"/><path d="M8-16C14-20 22-18 24-12" stroke="' + SKL + '" stroke-width="2.4" fill="none"/>';
-  const hand = (kind, x, y, r, s, flip) => '<g' + T(x, y, r, s) + ">" + (flip ? '<g transform="scale(-1 1)">' + kind + "</g>" : kind) + "</g>";
+  /* Mains : deux styles proposés. A = peau, B = schéma blanc façon notice */
+  const HSTY = {A:{f:"#F4C9A5", l:"#FBE0CB", t:"#F7D3B6", d:"#D9A07A", o:L}, B:{f:"#FFFFFF", l:"#FFFFFF", t:"#FFFFFF", d:"#BDBDBD", o:"#3A3A3A"}};
+  let HS = HSTY.A;
+  const hg = inner => '<g stroke="' + HS.o + '">' + inner + "</g>";
+  // Main droite qui serre un manche horizontal centré en (0,0) ; l'avant-bras part vers la droite
+  const GRIP = () => hg('<path d="M26-20C44-30 80-38 220-48L224 0C140 4 70 8 30 14Z" fill="' + HS.f + '"/><path d="M34-18C50-25 70-29 96-31" stroke="' + HS.l + '" stroke-width="2.6" fill="none"/>' +
+    '<path d="M30-21C18-27 2-26-8-19C-15-13-16-3-12 4L28 14C36 6 38-12 30-21Z" fill="' + HS.f + '"/><path d="M2-21C10-23 20-22 26-18" stroke="' + HS.l + '" stroke-width="2.2" fill="none"/>' +
+    '<path d="M19-2h9a5 5 0 0 1 5 5v6a5 5 0 0 1-5 5h-4a5 5 0 0 1-5-5z" fill="' + HS.f + '"/>' +
+    '<path d="M8-4h10a5.5 5.5 0 0 1 5.5 5.5v9a5.5 5.5 0 0 1-5.5 5.5h-5a5.5 5.5 0 0 1-5.5-5.5z" fill="' + HS.f + '"/>' +
+    '<path d="M-3-5h10a5.5 5.5 0 0 1 5.5 5.5v10a5.5 5.5 0 0 1-5.5 5.5h-5a5.5 5.5 0 0 1-5.5-5.5z" fill="' + HS.f + '"/>' +
+    '<path d="M-14-4h10a5.5 5.5 0 0 1 5.5 5.5v9a5.5 5.5 0 0 1-5.5 5.5h-5a5.5 5.5 0 0 1-5.5-5.5z" fill="' + HS.f + '"/>' +
+    '<path d="M-11 6q3 2 6 0M0 7q3 2 6 0M11 6q3 2 6 0M21 6q2 1.5 5 0" stroke="' + HS.d + '" stroke-width="1.6" fill="none"/>' +
+    '<path d="M4-17C-6-22-22-20-30-13C-34-9-31-4-26-5L-6-7C0-8 6-11 4-17Z" fill="' + HS.t + '"/><path d="M-30-12c3-2 6-2 7 1c0 3-3 4-6 3" fill="' + HS.l + '" stroke="' + HS.d + '" stroke-width="1.4"/>');
+  // Main gauche « en griffe » : bout des doigts repliés en (0,0), avant-bras vers le haut à gauche
+  const CLAW = () => hg('<path d="M-36-40L-200-170L-226-120L-28-14Z" fill="' + HS.f + '"/><path d="M-44-40L-150-126" stroke="' + HS.l + '" stroke-width="2.6" fill="none"/>' +
+    '<path d="M-42-36C-30-48-6-46 6-32C12-24 12-14 6-8L-26-6C-38-12-48-26-42-36Z" fill="' + HS.f + '"/><path d="M-30-40C-20-44-8-42 0-36" stroke="' + HS.l + '" stroke-width="2.4" fill="none"/>' +
+    '<path d="M-2-30C11-28 16-16 12-6C9 2 0 3-3-5Z" fill="' + HS.f + '"/><path d="M-14-28C-2-26 3-14 0-4C-3 4-12 4-15-4Z" fill="' + HS.f + '"/><path d="M-26-24C-15-22-11-12-13-3C-15 4-24 4-27-3Z" fill="' + HS.f + '"/>' +
+    '<path d="M4-20q3 2 5 6M-8-18q3 2 4 6M-20-14q2 2 3 5" stroke="' + HS.d + '" stroke-width="1.6" fill="none"/>');
+  // Paume posée à plat, doigts vers la gauche, avant-bras vers le haut à droite ; appui en (0,0)
+  const PALM = () => hg('<path d="M16-20L170-110L196-66L26 8Z" fill="' + HS.f + '"/>' +
+    '<path d="M-38-2C-40-9-35-13-28-13H4C12-24 26-22 29-11C31-1 23 6 12 6H-32C-36 6-38 2-38-2Z" fill="' + HS.f + '"/>' +
+    '<path d="M-30-6H0M-28 0H4" stroke="' + HS.d + '" stroke-width="1.6" fill="none"/><path d="M8-15C14-20 22-18 25-12" stroke="' + HS.l + '" stroke-width="2.4" fill="none"/>');
+  const hand = (kind, x, y, r, s, flip) => { const k = typeof kind === "function" ? kind() : kind; return '<g' + T(x, y, r, s) + ">" + (flip ? '<g transform="scale(-1 1)">' + k + "</g>" : k) + "</g>"; };
   // Couteau : pointe en (0,0) vers la gauche ; centre du manche en (126,-5)
   const KNIFE = '<path d="M0 0Q2-12 14-16L96-18V6H24Q6 6 0 0Z" fill="' + ST + '"/><path d="M22-11L92-13" stroke="' + STL + '" stroke-width="3"/>' +
     '<rect x="94" y="-19" width="8" height="26" rx="2" fill="' + STD + '"/><rect x="100" y="-14" width="52" height="18" rx="8" fill="#3B3632"/>' +
@@ -75,16 +83,38 @@ const GART = (() => {
   const A = {};
   const kf = (k, name, frames) => "@keyframes " + k + name + "{" + frames + "}";
   const an = (k, sel, name, dur, ease, extra) => ".gx-" + k + " " + sel + "{transform-box:fill-box;transform-origin:50% 50%;animation:" + k + name + " " + dur + "s " + (ease || E) + " infinite" + (extra ? ";" + extra : "") + "}";
+  // Étapes affichées en haut du dessin ; la pastille active s'allume en vert pendant sa fenêtre (en % de la boucle)
+  const chips = (k, items) => {
+    const w = items.map(([t]) => 18 + t.length*6.3), gap = 6, tot = w.reduce((a, b) => a + b, 0) + gap*(items.length - 1);
+    let x = 160 - tot/2, h = "";
+    items.forEach(([t], i) => { h += '<g class="cp cp' + i + '"><rect x="' + x.toFixed(1) + '" y="10" width="' + w[i].toFixed(1) + '" height="22" rx="11" fill="#fff" stroke-width="1.6"/><text x="' + (x + w[i]/2).toFixed(1) + '" y="25" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="11.5" font-weight="700" fill="' + L + '" stroke="none">' + t + "</text></g>" +
+      '<g class="ca ca' + i + '"><rect x="' + x.toFixed(1) + '" y="10" width="' + w[i].toFixed(1) + '" height="22" rx="11" fill="#2E7A4C" stroke="#2E7A4C" stroke-width="1.6"/><text x="' + (x + w[i]/2).toFixed(1) + '" y="25" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="11.5" font-weight="700" fill="#fff" stroke="none">' + t + "</text></g>"; x += w[i] + gap; });
+    return h;
+  };
+  const chipsCss = (k, items, dur) => ".gx-" + k + " .ca{opacity:0}" + items.map(([, a, b], i) => ".gx-" + k + " .ca" + i + "{animation:" + k + "Ca" + i + " " + dur + "s linear infinite}@keyframes " + k + "Ca" + i + "{0%," + Math.max(0, a - 0.01) + "%{opacity:0}" + (a + 0.5) + "%," + (b - 0.5) + "%{opacity:1}" + b + "%,100%{opacity:0}}").join("");
 
   /* 1 · Émincer */
-  A.emincer = {t:"Émincer", v:"comment émincer", c:["#F6DEBF","#FFF6E8"],
-    d: () => boardBand(140) +
-      '<path d="M50 162C50 114 76 92 110 92C144 92 168 114 168 162Z" fill="#F1D19C"/><path d="M68 162C68 124 86 106 110 106C134 106 150 124 150 162M88 162C88 134 98 120 110 120C122 120 130 134 130 162" fill="none" stroke="#C99A5C" stroke-width="1.6"/><path d="M62 126C72 108 88 101 102 100" fill="none" stroke="#FFF3DC" stroke-width="3.4"/>' +
-      [0,1,2,3].map(i => g("sl sl" + i, '<path d="M' + (196 + i*22) + " 186c-2-16 6-28 20-32" + '" fill="none" stroke="' + L + '" stroke-width="7"/><path d="M' + (196 + i*22) + " 186c-2-16 6-28 20-32" + '" fill="none" stroke="#F6E2BC" stroke-width="3.4"/>')).join("") +
-      hand(CLAW, 118, 104, -6, 1) +
-      g("kn", knifeHand(176, 162, -36)),
-    css: k => an(k, ".kn", "K", 1.4, E, "transform-origin:100% 0") + kf(k, "K", "0%,100%{transform:translate(4px,-22px) rotate(-6deg)}45%{transform:translate(0,0) rotate(0)}60%{transform:translate(0,0) rotate(0)}") +
-      [0,1,2,3].map(i => an(k, ".sl" + i, "S", 5.6, EO, "animation-delay:" + (0.6 + i*1.4 - 5.6).toFixed(1) + "s")).join("") + kf(k, "S", "0%{opacity:0;transform:translateX(-18px) rotate(-10deg)}8%{opacity:1;transform:none}90%{opacity:1;transform:none}100%{opacity:0}")};
+  A.emincer = {t:"Émincer", v:"couper en rondelles", c:["#F6DEBF","#FFF6E8"],
+    d: () => boardBand(150) +
+      '<path d="M200 116H44Q24 116 24 136Q24 156 44 156H200Z" fill="#4E9A5A"/><path d="M40 124H196M36 136H196M40 148H196" stroke="#7CC07F" stroke-width="2.4" fill="none"/><path d="M36 120Q28 136 36 152" stroke="#3E7F48" stroke-width="2.4" fill="none"/>' +
+      '<ellipse cx="200" cy="136" rx="7" ry="20" fill="#E6F2CF"/><circle cx="200" cy="130" r="1.4" fill="#9CC48A" stroke="none"/><circle cx="201" cy="140" r="1.4" fill="#9CC48A" stroke="none"/>' +
+      [0,1,2,3].map(i => g("sl sl" + i, '<g' + T(212, 136) + '><ellipse rx="7" ry="20" fill="#4E9A5A"/><ellipse rx="4.6" ry="16" fill="#E6F2CF" stroke-width="1.2"/><circle cy="-5" r="1.2" fill="#9CC48A" stroke="none"/><circle cy="5" r="1.2" fill="#9CC48A" stroke="none"/></g>')).join("") +
+      g("ha", hand(CLAW, 176, 118, 0, 1)) +
+      g("kn", knifeHand(184, 160, -50)),
+    css: k => an(k, ".kn", "K", 1.2, E) + kf(k, "K", "0%,100%{transform:translate(20px,-26px)}42%,58%{transform:translate(0,0)}") +
+      an(k, ".ha", "H", 1.2, E) + kf(k, "H", "0%,58%{transform:none}75%{transform:translateX(5px)}100%{transform:none}") +
+      [0,1,2,3].map(i => an(k, ".sl" + i, "S" + i, 4.8, "linear", "animation-delay:" + (i*1.2 - 4.8 + 0.6).toFixed(1) + "s")).join("") +
+      [0,1,2,3].map(i => kf(k, "S" + i, "0%{opacity:0;transform:none}2%{opacity:1;transform:none;animation-timing-function:" + EI + "}12%{opacity:1;transform:translate(" + (26 + i*16) + "px,22px) rotate(80deg);animation-timing-function:" + EO + "}16%,92%{opacity:1;transform:translate(" + (26 + i*16) + "px,22px) rotate(90deg)}100%{opacity:0;transform:translate(" + (26 + i*16) + "px,22px) rotate(90deg)}")).join("")};
+  A.emincer_b = {t:"Émincer", v:"comment émincer un oignon", c:["#F6DEBF","#FFF6E8"],
+    d: () => boardBand(150) +
+      '<path d="M40 168C40 118 68 96 112 96C156 96 196 118 196 168Z" fill="#F1D19C"/><path d="M58 168C58 128 80 110 112 110C144 110 176 128 178 168M80 168C80 138 94 124 112 124C130 124 152 138 156 168" fill="none" stroke="#C99A5C" stroke-width="1.8"/><path d="M40 168C40 118 68 96 112 96C156 96 196 118 196 168" fill="none" stroke="#B9783A" stroke-width="4"/>' +
+      [0,1,2,3].map(i => g("sl sl" + i, '<g' + T(208, 168) + '><path d="M0 0C0-34 12-56 20-60" fill="none" stroke="' + L + '" stroke-width="9"/><path d="M0 0C0-34 12-56 20-60" fill="none" stroke="#F6E2BC" stroke-width="5"/><path d="M0 0C0-34 12-56 20-60" fill="none" stroke="#E2C48C" stroke-width="1.2"/></g>')).join("") +
+      g("ha", hand(CLAW, 166, 108, 10, 1)) +
+      g("kn", knifeHand(192, 172, -52)),
+    css: k => an(k, ".kn", "K", 1.2, E) + kf(k, "K", "0%,100%{transform:translate(20px,-26px)}42%,58%{transform:translate(0,0)}") +
+      an(k, ".ha", "H", 1.2, E) + kf(k, "H", "0%,58%{transform:none}75%{transform:translateX(5px)}100%{transform:none}") +
+      [0,1,2,3].map(i => an(k, ".sl" + i, "S" + i, 4.8, "linear", "animation-delay:" + (i*1.2 - 4.8 + 0.6).toFixed(1) + "s;transform-origin:0 100%")).join("") +
+      [0,1,2,3].map(i => kf(k, "S" + i, "0%{opacity:0;transform:none}2%{opacity:1;transform:none;animation-timing-function:" + EO + "}14%,92%{opacity:1;transform:translate(" + (14 + i*20) + "px,0) rotate(" + (24 + i*6) + "deg)}100%{opacity:0;transform:translate(" + (14 + i*20) + "px,0) rotate(" + (24 + i*6) + "deg)}")).join("")};
 
   /* 2 · Couper en dés */
   A.des = {t:"Couper en dés", v:"couper en dés technique", c:["#F6DEBF","#FFF6E8"],
@@ -159,13 +189,13 @@ const GART = (() => {
 
   /* 9 · Eau bouillante */
   A.bouillir = {t:"Cuire à l'eau bouillante", v:"cuire des pâtes dans l'eau bouillante", c:["#DCE8F7","#F3F8FE"],
-    d: () => stove(160, 80) + fire(160, 150, 7, 1.1) +
-      g("pa", [-36,-22,-8,6,20,34].map((dx, i) => '<path d="M' + (160 + dx*0.25) + " 100L" + (160 + dx) + " " + (26 + Math.abs(dx)*0.5) + '" stroke="' + L + '" stroke-width="5.4"/><path d="M' + (160 + dx*0.25) + " 100L" + (160 + dx) + " " + (26 + Math.abs(dx)*0.5) + '" stroke="#F5D777" stroke-width="2.6"/>').join("")) +
-      pot(160, 98, 86, 176) +
-      [[106,0],[128,1],[152,2],[176,3],[200,4],[140,5],[188,6],[118,7],[212,8]].map(([x,i]) => '<circle class="bu" style="animation-delay:-' + (i*0.27).toFixed(2) + 's" cx="' + x + '" cy="100" r="6" fill="#EAF4FE" stroke-width="1.6"/>').join("") +
-      steam(116, 82, 56, 0) + steam(160, 78, 62, 1) + steam(204, 82, 56, 2),
-    css: k => an(k, ".bu", "Bu", 1.5, EI, "transform-origin:50% 50%") + kf(k, "Bu", "0%{transform:translateY(6px) scale(.2);opacity:0}30%{opacity:1}80%{transform:translateY(-2px) scale(1.1);opacity:1}100%{transform:translateY(-4px) scale(1.6);opacity:0}") +
-      an(k, ".pa", "P", 3.6, E, "transform-origin:50% 100%") + kf(k, "P", "0%,100%{transform:none}50%{transform:translateY(8px) rotate(-3deg)}")};
+    d: () => stove(160, 80) + fire(160, 150, 7, 1.1) + pot(160, 104, 86, 176) +
+      g("pa", [-30,-18,-6,6,18,30].map((dx, i) => { const x0 = 160 + dx*0.9, y0 = 104 + 4 - Math.abs(dx)*0.06, x1 = 160 + dx*2.2, y1 = 34 + Math.abs(dx)*0.6; return '<path d="M' + x0 + " " + y0 + "L" + x1 + " " + y1 + '" stroke="' + L + '" stroke-width="5.6"/><path d="M' + x0 + " " + y0 + "L" + x1 + " " + y1 + '" stroke="#F5D777" stroke-width="2.8"/>'; }).join("")) +
+      '<path d="M74 104A86 16.3 0 0 0 246 104" fill="none" stroke="' + L + '" stroke-width="9"/><path d="M74 104A86 16.3 0 0 0 246 104" fill="none" stroke="#D5DEE6" stroke-width="5"/>' +
+      [[100,0],[124,1],[150,2],[176,3],[204,4],[136,5],[190,6],[112,7],[218,8]].map(([x,i]) => '<circle class="bu" style="animation-delay:-' + (i*0.27).toFixed(2) + 's" cx="' + x + '" cy="108" r="5" fill="#EAF4FE" stroke-width="1.5"/>').join("") +
+      steam(116, 86, 52, 0) + steam(160, 82, 58, 1) + steam(204, 86, 52, 2),
+    css: k => an(k, ".bu", "Bu", 1.5, EI) + kf(k, "Bu", "0%{transform:translateY(4px) scale(.2);opacity:0}30%{opacity:1}80%{transform:translateY(-1px) scale(1.1);opacity:1}100%{transform:translateY(-3px) scale(1.5);opacity:0}") +
+      an(k, ".pa", "P", 3.6, E, "transform-origin:50% 100%") + kf(k, "P", "0%,100%{transform:none}50%{transform:translateY(5px) rotate(-2deg)}")};
 
   /* 10 · Égoutter */
   A.egoutter = {t:"Égoutter", v:"égoutter dans une passoire", c:["#DCE8F7","#F3F8FE"],
@@ -207,12 +237,13 @@ const GART = (() => {
   /* 13 · Retourner */
   A.retourner = {t:"Retourner", v:"retourner une crêpe", c:["#F5DCC2","#FFF3E6"],
     d: () => stove(140, 70) + fire(140, 120, 5, 1) +
-      arrow("M96 96Q108 36 150 30Q192 36 204 96", "ar") +
-      g("pn", pan(140, 134) + hand(GRIP, 290, 112, -18, 1)) +
-      g("cr", '<ellipse cx="140" cy="128" rx="66" ry="18" fill="#E7A95A"/><ellipse cx="140" cy="126" rx="60" ry="14" fill="#F4CB86"/><circle cx="118" cy="125" r="3.6" fill="#D99A4E" stroke="none"/><circle cx="148" cy="121" r="3" fill="#D99A4E" stroke="none"/><circle cx="164" cy="129" r="3.2" fill="#D99A4E" stroke="none"/><circle cx="134" cy="132" r="2.4" fill="#D99A4E" stroke="none"/>'),
-    css: k => ".gx-" + k + " .cr{transform-origin:50% 50%;animation:" + k + "C 2.6s infinite}" + kf(k, "C", "0%,22%{transform:none;animation-timing-function:cubic-bezier(.2,.7,.4,1)}48%{transform:translateY(-64px) scaleY(-.1);animation-timing-function:cubic-bezier(.6,0,.8,.5)}72%{transform:translateY(0) scaleY(-1)}78%{transform:translateY(-4px) scaleY(-.95)}84%,100%{transform:scaleY(-1)}") +
-      an(k, ".pn", "P", 2.6, E, "transform-origin:90% 40%") + kf(k, "P", "0%,12%{transform:none}22%{transform:translateY(-10px) rotate(-4deg)}30%{transform:translateY(3px)}38%,66%{transform:none}74%{transform:translateY(4px)}82%,100%{transform:none}") +
-      an(k, ".ar", "A", 2.6, "linear") + kf(k, "A", "0%,16%{opacity:0}30%,62%{opacity:1}80%,100%{opacity:0}")};
+      arrow("M100 100Q110 50 140 46Q170 50 180 100", "ar") +
+      g("pn", pan(140, 134) + hand(GRIP, 292, 110, -18, 1)) +
+      g("cr", '<ellipse cx="140" cy="128" rx="66" ry="18" fill="#C9792F"/><ellipse cx="140" cy="126" rx="60" ry="14" fill="#E3A04E"/><circle cx="116" cy="124" r="4" fill="#B5652C" stroke="none"/><circle cx="150" cy="121" r="3.4" fill="#B5652C" stroke="none"/><circle cx="166" cy="129" r="3.6" fill="#B5652C" stroke="none"/><circle cx="132" cy="132" r="2.6" fill="#B5652C" stroke="none"/>' + g("cf", '<ellipse cx="140" cy="128" rx="66" ry="18" fill="#F2D9A2"/><ellipse cx="140" cy="126" rx="60" ry="14" fill="#FBEBC4"/><path d="M106 124q14-6 30 0" stroke="#fff" stroke-width="3" fill="none"/>')),
+
+    css: k => an(k, ".cr", "C", 2.6, "linear") + kf(k, "C", "0%,18%{transform:none}22%{transform:translateY(-22px) scaleY(.85)}26%{transform:translateY(-40px) scaleY(.55)}30%{transform:translateY(-52px) scaleY(.2)}34%{transform:translateY(-56px) scaleY(-.2)}38%{transform:translateY(-52px) scaleY(-.55)}42%{transform:translateY(-40px) scaleY(-.85)}46%{transform:translateY(-20px) scaleY(-1)}50%{transform:translateY(0) scaleY(-1)}54%{transform:translateY(-3px) scaleY(-.97)}58%,100%{transform:scaleY(-1)}") +
+      an(k, ".pn", "P", 2.6, E, "transform-origin:90% 40%") + kf(k, "P", "0%,10%{transform:none}18%{transform:translateY(-10px) rotate(-4deg)}24%{transform:translateY(2px)}30%,46%{transform:none}52%{transform:translateY(5px)}58%,100%{transform:none}") +
+      an(k, ".cf", "Cf", 2.6, "linear") + kf(k, "Cf", "0%,31%{opacity:1}33%,90%{opacity:0}100%{opacity:1}") + an(k, ".ar", "A", 2.6, "linear") + kf(k, "A", "0%,16%{opacity:0}22%,48%{opacity:1}56%,100%{opacity:0}")};
 
   /* 14 · Fouetter */
   const WHISK = '<rect x="-6" y="-70" width="12" height="44" rx="6" fill="#3B3632"/><path d="M0-28C-18-12-16 18 0 28C16 18 18-12 0-28ZM0-28C-8-10-7 16 0 28C8 16 9-10 0-28Z" fill="none" stroke="' + STD + '" stroke-width="2.6"/><path d="M0-28V28" stroke="' + STD + '" stroke-width="2.2"/>';
@@ -228,44 +259,71 @@ const GART = (() => {
   /* 15 · Casser les œufs */
   const EGGH = side => '<path transform="scale(' + side + ' 1)" d="M0-30C-17-30-25-10-25 4C-25 19-14 28 0 28L-4 18 2 9-3 0 2-9-3-19 0-30Z" fill="#FFF8EE"/><path transform="scale(' + side + ' 1)" d="M-18-14C-16-22-10-26-4-27" stroke="#fff" stroke-width="3" fill="none"/>';
   A.oeufs = {t:"Casser les œufs", v:"casser un œuf proprement", c:["#F6DEBF","#FFF6E8"],
-    d: () => table(176) + bowl(150, 128, 92, "#FFFFFF", "#FBF6EC", 0.55) +
-      '<ellipse cx="150" cy="131" rx="56" ry="9" fill="#FFFDF8"/><ellipse cx="144" cy="131" rx="13" ry="5.4" fill="#F7B32B"/>' +
+    d: () => table(176) + bowl(150, 128, 92, "#FFFFFF", "#F4EFE6", 0.55) +
+      g("in", '<ellipse cx="150" cy="131" rx="40" ry="7" fill="#FFFDF8" stroke-width="1.6"/><ellipse cx="146" cy="131" rx="12" ry="5" fill="#F7B32B"/>') +
       g("ri", '<ellipse cx="150" cy="131" rx="22" ry="4.6" fill="none" stroke="#F7B32B" stroke-width="2.4"/>') +
       g("yo", '<ellipse cx="150" cy="96" rx="10" ry="11" fill="#F7B32B"/><ellipse cx="147" cy="92" rx="3.4" ry="3.8" fill="#FCD36A" stroke="none"/>') +
-      g("eg", g("", g("hl", EGGH(1)) + g("hr", EGGH(-1)), T(150, 84)) + '<path class="ck" d="M150 56l-4 9 5 8-4 9" stroke="' + L + '" stroke-width="1.8" fill="none"/>' + hand(GRIP, 192, 70, -24, 0.9)),
-    css: k => an(k, ".eg", "E", 3, "linear") + kf(k, "E", "0%{transform:translate(52px,-10px) rotate(14deg);animation-timing-function:" + EI + "}14%{transform:translate(52px,24px) rotate(14deg);animation-timing-function:" + EO + "}22%{transform:translate(52px,14px) rotate(14deg);animation-timing-function:" + E + "}40%,100%{transform:none}") +
-      an(k, ".hl", "L", 3, E, "transform-origin:100% 100%") + kf(k, "L", "0%,40%{transform:none}56%,92%{transform:translate(-14px,-4px) rotate(-40deg)}100%{transform:none}") +
-      an(k, ".hr", "R", 3, E, "transform-origin:0 100%") + kf(k, "R", "0%,40%{transform:none}56%,92%{transform:translate(14px,-4px) rotate(40deg)}100%{transform:none}") +
-      an(k, ".ck", "Ck", 3, "linear") + kf(k, "Ck", "0%,13%{opacity:0}15%,40%{opacity:1}44%,100%{opacity:0}") +
-      an(k, ".yo", "Y", 3, "linear") + kf(k, "Y", "0%,48%{opacity:0;transform:none}52%{opacity:1;transform:none;animation-timing-function:" + EI + "}68%{opacity:1;transform:translateY(34px) scale(.9,1.2)}72%,100%{opacity:0;transform:translateY(36px)}") +
-      an(k, ".ri", "Ri", 3, EO, "transform-origin:50% 50%") + kf(k, "Ri", "0%,68%{opacity:0;transform:scale(.4)}72%{opacity:1}100%{opacity:0;transform:scale(2.2)}")};
+      g("eg", g("", g("hl", EGGH(1)) + g("hr", EGGH(-1)), T(150, 84)) + '<g class="ew"><ellipse cx="150" cy="83" rx="25" ry="29" fill="#FFF8EE"/><path d="M134 68C136 60 142 56 148 55" stroke="#fff" stroke-width="3" fill="none"/></g>' + '<path class="ck" d="M150 56l-4 9 5 8-4 9" stroke="' + L + '" stroke-width="1.8" fill="none"/>' + hand(GRIP, 192, 70, -24, 0.9)),
+    css: k => an(k, ".eg", "E", 3.4, "linear") + kf(k, "E", "0%{transform:translate(52px,-10px) rotate(14deg);animation-timing-function:" + EI + "}14%{transform:translate(52px,24px) rotate(14deg);animation-timing-function:" + EO + "}22%{transform:translate(52px,14px) rotate(14deg);animation-timing-function:" + E + "}40%,100%{transform:none}") +
+      an(k, ".hl", "L", 3.4, E, "transform-origin:100% 100%") + kf(k, "L", "0%,40%{transform:none}56%,92%{transform:translate(-14px,-4px) rotate(-40deg)}100%{transform:none}") +
+      an(k, ".hr", "R", 3.4, E, "transform-origin:0 100%") + kf(k, "R", "0%,40%{transform:none}56%,92%{transform:translate(14px,-4px) rotate(40deg)}100%{transform:none}") +
+      an(k, ".ew", "W", 3.4, "linear") + kf(k, "W", "0%,14%{opacity:1}15%,100%{opacity:0}") + an(k, ".ck", "Ck", 3.4, "linear") + kf(k, "Ck", "0%,13%{opacity:0}15%,40%{opacity:1}44%,100%{opacity:0}") +
+      an(k, ".yo", "Y", 3.4, "linear") + kf(k, "Y", "0%,46%{opacity:0;transform:none}50%{opacity:1;transform:none;animation-timing-function:" + EI + "}64%{opacity:1;transform:translateY(34px) scale(.9,1.2)}66%,100%{opacity:0;transform:translateY(36px)}") +
+      an(k, ".in", "I", 3.4, "linear") + kf(k, "I", "0%,63%{opacity:0;transform:scale(.3)}66%{opacity:1;transform:scale(.9);animation-timing-function:" + EO + "}74%,92%{opacity:1;transform:none}100%{opacity:0}") +
+      an(k, ".ri", "Ri", 3.4, EO) + kf(k, "Ri", "0%,64%{opacity:0;transform:scale(.4)}68%{opacity:1}96%,100%{opacity:0;transform:scale(2.2)}")};
 
   /* 16 · Mélanger */
   A.melanger = {t:"Mélanger", v:"bien mélanger", c:["#F5DCC2","#FFF3E6"],
-    d: () => table(178) + '<path d="M54 102H266Q258 178 160 182Q62 178 54 102Z" fill="' + CUF + '"/><path d="M70 116Q76 160 120 172" stroke="#fff" stroke-opacity=".25" stroke-width="8" fill="none"/><ellipse cx="160" cy="102" rx="106" ry="20" fill="#3B8F5C"/><ellipse cx="160" cy="104" rx="96" ry="15" fill="#E8B04B"/>' +
-      g("co", [[118,104,"#E86F55"],[142,108,"#5DB86A"],[166,101,"#F6EBCF"],[190,107,"#E86F55"],[210,103,"#5DB86A"],[130,99,"#F6EBCF"],[176,110,"#F6EBCF"]].map(([x,y,c]) => '<rect x="' + (x - 5) + '" y="' + (y - 5) + '" width="10" height="10" rx="2.6" fill="' + c + '" stroke-width="1.4"/>').join("")) +
-      g("sp", g("", SPOON + hand(GRIP, -14, 0, 0, 1), T(240, 50, 38))),
-    css: k => an(k, ".sp", "S", 1.8, "linear") + kf(k, "S", "0%{transform:translate(0,0)}25%{transform:translate(-30px,6px)}50%{transform:translate(-56px,0)}75%{transform:translate(-30px,-8px)}100%{transform:translate(0,0)}") +
-      an(k, ".co", "C", 1.8, "linear", "transform-origin:50% 50%") + kf(k, "C", "0%{transform:translateX(0) scaleX(1)}50%{transform:translateX(-10px) scaleX(-1)}100%{transform:translateX(0) scaleX(1)}")};
+    d: () => table(180) + '<path d="M52 98H268Q260 180 160 184Q60 180 52 98Z" fill="' + CUF + '"/><path d="M68 112Q74 158 118 172" stroke="#fff" stroke-opacity=".25" stroke-width="8" fill="none"/><ellipse cx="160" cy="98" rx="108" ry="21" fill="#3B8F5C"/><ellipse cx="160" cy="100" rx="98" ry="16" fill="#F2C46A"/>' +
+      '<g transform="translate(160 100) scale(1 .17)"><g class="vx"><path d="M0 0C14-8 30 4 26 22C20 44-12 50-30 34C-52 14-40-24-10-38C24-54 64-32 70 2C76 40 44 72 0 76C-46 78-82 48-84 8C-86-34-56-70-12-78" fill="none" stroke="#C98A34" stroke-width="3.6" vector-effect="non-scaling-stroke"/><path d="M0 0C14-8 30 4 26 22C20 44-12 50-30 34C-52 14-40-24-10-38C24-54 64-32 70 2C76 40 44 72 0 76C-46 78-82 48-84 8C-86-34-56-70-12-78" fill="none" stroke="#FFF1D0" stroke-width="1.6" vector-effect="non-scaling-stroke"/></g></g>' +
+      g("sp", g("", SPOON + hand(GRIP, -14, 0, 0, 1), T(240, 34, -36))),
+    css: k => an(k, ".vx", "V", 1.6, "linear", "transform-origin:50% 50%") + kf(k, "V", "to{transform:rotate(360deg)}") +
+      an(k, ".sp", "S", 1.6, "linear") + kf(k, "S", Array.from({length:9}, (_, n) => { const a = n/8*2*Math.PI; return (n*12.5) + "%{transform:translate(" + (20 + 40*Math.cos(a)).toFixed(1) + "px," + (6*Math.sin(a)).toFixed(1) + "px)}"; }).join(""))};
 
   /* 17 · Ajouter / verser */
+  const PEA = (x, y) => '<circle cx="' + x + '" cy="' + y + '" r="5" fill="#6BBF59" stroke-width="1.5"/><circle cx="' + (x - 1.6) + '" cy="' + (y - 1.6) + '" r="1.5" fill="#B8E3A8" stroke="none"/>';
+  const CAR = (x, y) => '<circle cx="' + x + '" cy="' + y + '" r="7" fill="#F08A3C" stroke-width="1.5"/><circle cx="' + x + '" cy="' + y + '" r="3.4" fill="#F8B27A" stroke="none"/>';
+  const TOM = (x, y) => '<path d="M' + (x - 8) + " " + (y + 3) + "A8 8 0 0 1 " + (x + 8) + " " + (y + 3) + 'Z" fill="#E8483A" stroke-width="1.5"/><circle cx="' + (x - 3) + '" cy="' + y + '" r="1.2" fill="#FBE3A0" stroke="none"/><circle cx="' + (x + 3) + '" cy="' + y + '" r="1.2" fill="#FBE3A0" stroke="none"/>';
   A.verser = {t:"Ajouter", v:"ajouter les ingrédients en cuisine", c:["#F6DEBF","#FFF6E8"],
     d: () => stove(150, 70) + fire(150, 110, 5, 0.9) +
-      '<rect x="60" y="118" width="24" height="12" rx="6" fill="#A8311D"/><rect x="216" y="118" width="24" height="12" rx="6" fill="#A8311D"/><path d="M76 110H224V162Q224 176 210 176H90Q76 176 76 162Z" fill="#C73A23"/><path d="M88 124V166" stroke="#fff" stroke-opacity=".28" stroke-width="8"/><ellipse cx="150" cy="110" rx="74" ry="14" fill="#A8311D"/><ellipse cx="150" cy="111" rx="66" ry="10" fill="#E07A3A"/>' +
-      [[140,0,"#5DB86A"],[152,1,"#F6EBCF"],[132,2,"#E86F55"],[158,3,"#5DB86A"],[146,4,"#F2D27A"]].map(([x,i,c]) => '<rect class="pc pc' + i + '" x="' + x + '" y="62" width="10" height="10" rx="2.6" fill="' + c + '" stroke-width="1.4"/>').join("") +
-      g("bo", '<path d="M150 46H224Q220 76 187 78Q154 76 150 46Z" fill="#fff"/><ellipse cx="187" cy="46" rx="37" ry="8" fill="#F1ECE3"/><ellipse cx="187" cy="47" rx="31" ry="5.4" fill="#E86F55"/>' + hand(GRIP, 232, 58, -10, 0.9)),
-    css: k => an(k, ".bo", "B", 2.4, E, "transform-origin:0 50%") + kf(k, "B", "0%,100%{transform:rotate(0)}30%,70%{transform:rotate(-34deg)}") +
-      [0,1,2,3,4].map(i => an(k, ".pc" + i, "P", 2.4, EI, "animation-delay:" + (0.12*i).toFixed(2) + "s;transform-origin:50% 50%")).join("") + kf(k, "P", "0%,28%{opacity:0;transform:none}34%{opacity:1}64%{opacity:1;transform:translateY(44px) rotate(120deg)}70%,100%{opacity:0;transform:translateY(48px) rotate(140deg)}")};
+      '<rect x="60" y="122" width="24" height="12" rx="6" fill="#A8311D"/><rect x="216" y="122" width="24" height="12" rx="6" fill="#A8311D"/><path d="M76 114H224V162Q224 176 210 176H90Q76 176 76 162Z" fill="#C73A23"/><path d="M88 128V166" stroke="#fff" stroke-opacity=".28" stroke-width="8"/><ellipse cx="150" cy="114" rx="74" ry="14" fill="#A8311D"/><ellipse cx="150" cy="115" rx="66" ry="10" fill="#E07A3A"/>' +
+      PEA(122, 114) + CAR(170, 116) + TOM(146, 112) +
+      [[PEA,138,0],[CAR,150,1],[TOM,160,2],[PEA,146,3],[CAR,134,4],[PEA,156,5]].map(([f,x,i]) => g("pc pc" + i, f(x, 70))).join("") +
+      [0,1,2].map(i => '<circle class="spl spl' + i + '" cx="' + (140 + i*10) + '" cy="110" r="2.4" fill="#F3A15E" stroke-width="1"/>').join("") +
+      g("bo", '<path d="M150 46H224Q220 76 187 78Q154 76 150 46Z" fill="#fff"/><ellipse cx="187" cy="46" rx="37" ry="8" fill="#F1ECE3"/><ellipse cx="187" cy="47" rx="31" ry="5.4" fill="#FBEFD9"/>' + PEA(176, 45) + CAR(192, 46) + TOM(204, 44) + hand(GRIP, 236, 60, -10, 0.9)),
+    css: k => an(k, ".bo", "B", 3, E, "transform-box:view-box;transform-origin:187px 60px") + kf(k, "B", "0%,100%{transform:rotate(0)}25%,70%{transform:rotate(-36deg)}") +
+      [0,1,2,3,4,5].map(i => an(k, ".pc" + i, "P", 3, "linear", "animation-delay:" + (0.1*i - 3).toFixed(2) + "s")).join("") +
+      kf(k, "P", "0%,26%{opacity:0;transform:none}30%{opacity:1;transform:none;animation-timing-function:" + EI + "}52%{opacity:1;transform:translateY(42px) rotate(140deg)}56%,100%{opacity:0;transform:translateY(44px) rotate(150deg)}") +
+      [0,1,2].map(i => an(k, ".spl" + i, "Sp", 3, EO, "animation-delay:" + (0.15*i - 3).toFixed(2) + "s")).join("") + kf(k, "Sp", "0%,50%{opacity:0;transform:none}54%{opacity:1}66%,100%{opacity:0;transform:translate(" + "0,-14px) scale(.6)}")};
 
   /* 18 · Disposer en couches */
-  A.disposer = {t:"Disposer", v:"monter un gratin en couches", c:["#F8E2CB","#FFF5EA"],
-    d: () => table(178) + '<rect x="50" y="100" width="220" height="78" rx="16" fill="#DCEBF5" fill-opacity=".9"/>' +
-      '<rect x="60" y="148" width="200" height="22" rx="6" fill="#FFF3D6"/><rect x="60" y="136" width="200" height="12" fill="#F2C27B"/><rect x="60" y="124" width="200" height="12" fill="#C24F2C"/>' +
-      g("sa", '<rect x="60" y="112" width="200" height="12" rx="2" fill="#C24F2C"/>') +
-      '<rect x="50" y="100" width="220" height="78" rx="16" fill="none" stroke-width="2.6"/><path d="M60 106H130" stroke="#fff" stroke-width="4" opacity=".8"/>' +
-      g("sh", '<rect x="74" y="48" width="172" height="11" rx="4" fill="#F2C27B"/><path d="M84 53.5h152" stroke="#E2A65C" stroke-width="1.6" stroke-dasharray="6 8"/>'),
-    css: k => an(k, ".sh", "S", 2.8, E) + kf(k, "S", "0%{transform:translateY(-30px);opacity:0}20%{opacity:1}55%,85%{transform:translateY(52px);opacity:1}100%{transform:translateY(52px);opacity:0}") +
-      an(k, ".sa", "A", 2.8, EO, "transform-origin:0 50%") + kf(k, "A", "0%,10%{transform:scaleX(0)}45%,100%{transform:scaleX(1)}")};
+  const DIS = [["Pâtes",4,22],["Sauce",24,42],["Pâtes",44,62],["Béchamel",64,82],["Fromage",84,96]];
+  const POT = (x, y) => '<ellipse cx="' + x + '" cy="' + y + '" rx="17" ry="10" fill="#F2C94C"/><ellipse cx="' + (x - 4) + '" cy="' + (y - 3) + '" rx="7" ry="3" fill="#FBE3A0" stroke="none"/>';
+  A.disposer = {t:"Disposer", v:"disposer les morceaux dans le plat", c:["#F8E2CB","#FFF5EA"],
+    d: () => table(182) + shadowE(160, 184, 108, 6) + '<rect x="50" y="118" width="220" height="62" rx="14" fill="#E8F1F7"/><rect x="60" y="128" width="200" height="44" rx="9" fill="#F7E7CF" stroke-width="1.6"/><path d="M60 122H150" stroke="#fff" stroke-width="3.4"/>' +
+      [0,1,2,3].map(i => g("pi pi" + i, POT(98 + i*42, 151))).join("") +
+      g("hd", hand(GRIP, 266, 42, -34, 0.9) + g("hp", POT(250, 62))),
+    css: k => ".gx-" + k + " .pi{opacity:0}" +
+      an(k, ".hd", "H", 4.8, "linear") + kf(k, "H", [0,1,2,3].map(i => { const a = i*25, dx = 98 + i*42 - 250, dy = 89; return a + "%{transform:translate(0,0);animation-timing-function:" + E + "}" + (a + 11) + "%{transform:translate(" + dx + "px," + dy + "px)}" + (a + 15) + "%{transform:translate(" + dx + "px," + dy + "px);animation-timing-function:" + E + "}"; }).join("") + "100%{transform:translate(0,0)}") +
+      an(k, ".hp", "P", 4.8, "linear") + kf(k, "P", [0,1,2,3].map(i => { const a = i*25; return a + "%,{opacity:1}".slice(1) && (a + "%{opacity:1}" + (a + 13) + "%{opacity:1}" + (a + 13.3) + "%{opacity:0}" + (a + 22) + "%{opacity:0}" + (a + 24) + "%{opacity:1}"); }).join("")) +
+      [0,1,2,3].map(i => an(k, ".pi" + i, "I" + i, 4.8, "linear") + kf(k, "I" + i, "0%," + (i*25 + 13) + "%{opacity:0}" + (i*25 + 13.3) + "%,96%{opacity:1}100%{opacity:0}")).join("")};
+
+  A.couches = {t:"Monter en couches", v:"monter des lasagnes en couches", c:["#F8E2CB","#FFF5EA"],
+    d: k => table(182) + chips(k, DIS) +
+      '<rect x="56" y="80" width="208" height="98" rx="14" fill="#E8F1F7"/>' +
+      g("l0", '<rect x="66" y="158" width="188" height="10" rx="3" fill="#F2C27B"/><path d="M72 163H248" stroke="#E2A65C" stroke-width="1.6" stroke-dasharray="7 7"/>') +
+      g("l1", '<path d="M66 158V150Q90 144 116 150T166 150T214 150T254 150V158Z" fill="#C24F2C"/>') +
+      g("l2", '<rect x="66" y="140" width="188" height="10" rx="3" fill="#F2C27B"/><path d="M72 145H248" stroke="#E2A65C" stroke-width="1.6" stroke-dasharray="7 7"/>') +
+      g("l3", '<path d="M66 140V130Q92 124 120 130T172 130T222 130T254 130V140Z" fill="#FFF3D6"/>') +
+      g("l4", [76,96,116,136,156,176,196,216,236,90,130,170,210].map((x, i) => '<rect x="' + x + '" y="' + (122 + (i % 3)*2) + '" width="9" height="4" rx="2" fill="#F5C33B" stroke-width="1.2"/>').join("")) +
+      '<rect x="56" y="80" width="208" height="98" rx="14" fill="none" stroke-width="2.6"/><path d="M66 88H140" stroke="#fff" stroke-width="4"/>',
+    css: k => chipsCss(k, DIS, 6) +
+      ".gx-" + k + " .l0,.gx-" + k + " .l2{opacity:0}" + an(k, ".l0", "A", 6, "linear") + an(k, ".l2", "C", 6, "linear") +
+      kf(k, "A", "0%,4%{opacity:0;transform:translateY(-70px);animation-timing-function:" + EO + "}14%,95%{opacity:1;transform:none}100%{opacity:0}") +
+      kf(k, "C", "0%,44%{opacity:0;transform:translateY(-70px);animation-timing-function:" + EO + "}54%,95%{opacity:1;transform:none}100%{opacity:0}") +
+      an(k, ".l1", "B", 6, "linear", "transform-origin:50% 100%") + kf(k, "B", "0%,24%{opacity:0;transform:scaleX(0)}25%{opacity:1;transform:scaleX(.05);animation-timing-function:" + E + "}38%,95%{opacity:1;transform:scaleX(1)}100%{opacity:0}") +
+      an(k, ".l3", "D", 6, "linear", "transform-origin:50% 100%") + kf(k, "D", "0%,64%{opacity:0;transform:scaleX(0)}65%{opacity:1;transform:scaleX(.05);animation-timing-function:" + E + "}78%,95%{opacity:1;transform:scaleX(1)}100%{opacity:0}") +
+      an(k, ".l4", "F", 6, "linear") + kf(k, "F", "0%,84%{opacity:0;transform:translateY(-40px);animation-timing-function:" + EO + "}90%,95%{opacity:1;transform:none}100%{opacity:0}")};
 
   /* 19 · Tartiner */
   A.tartiner = {t:"Tartiner", v:"tartiner", c:["#F6DEBF","#FFF6E8"],
@@ -286,40 +344,72 @@ const GART = (() => {
       ".gx-" + k + " .fl{transform-origin:50% 50%}" + an(k, ".fl", "F", 1.8, "ease-out") + kf(k, "F", "0%,40%{opacity:0;transform:scale(.3)}55%{opacity:.8}100%{opacity:0;transform:scale(2.4) translateY(-6px)}")};
 
   /* 21 · Rouler */
-  A.rouler = {t:"Rouler", v:"rouler un wrap ou des makis", c:["#E2EFE3","#F5FBF5"],
-    d: () => table(178, "#E6D2AE") + '<rect x="16" y="110" width="288" height="66" rx="8" fill="#D9C28A"/>' + [30,50,70,90,110,130,150,170,190,210,230,250,270,290].map(x => '<path d="M' + x + ' 111v64" stroke="#B89A5C" stroke-width="1.8"/>').join("") +
-      g("sh", '<rect x="78" y="118" width="214" height="50" rx="4" fill="#2F4A35"/><rect x="84" y="122" width="202" height="42" rx="3" fill="#FBF6EC"/><rect x="84" y="136" width="202" height="9" rx="4.5" fill="#E86F55"/><rect x="84" y="145" width="202" height="7" rx="3.5" fill="#5DB86A"/><rect x="84" y="130" width="202" height="6" rx="3" fill="#F2C27B"/>') +
-      g("rl", '<circle r="31" fill="#2F4A35"/><circle r="25" fill="#FBF6EC"/><circle cx="-7" cy="-5" r="7" fill="#E86F55"/><circle cx="7" cy="6" r="6" fill="#5DB86A"/><circle cx="6" cy="-9" r="4.5" fill="#F2C27B"/><path d="M0 0m0-9a9 9 0 1 1-9 9a18 18 0 1 1 18 18" stroke="#D9C9A8" stroke-width="1.6" fill="none"/>', T(64, 140)) +
-      arrow("M64 92Q160 58 256 92", "ar"),
-    css: k => an(k, ".rl", "R", 3, E, "transform-origin:50% 50%") + kf(k, "R", "0%,8%{transform:translate(64px,140px) rotate(0)}70%,86%{transform:translate(262px,140px) rotate(370deg)}100%{transform:translate(64px,140px) rotate(0)}") +
-      an(k, ".sh", "S", 3, E, "transform-origin:100% 50%") + kf(k, "S", "0%,8%{transform:scaleX(1)}70%,86%{transform:scaleX(.06)}100%{transform:scaleX(1)}")};
+  const WRAP = [["Garnir",0,20],["Replier",20,40],["Rabattre",40,60],["Rouler",60,92]];
+  A.rouler = {t:"Rouler un wrap", v:"comment rouler un wrap", c:["#E2EFE3","#F5FBF5"],
+    d: k => '<defs><clipPath id="' + k + '-c"><rect x="124" y="0" width="72" height="128"/></clipPath><clipPath id="' + k + '-s"><rect x="0" y="0" width="320" height="128"/></clipPath></defs>' +
+      table(182, "#E6D2AE") + chips(k, WRAP) +
+      g("fl", '<circle cx="160" cy="106" r="64" fill="#F1D9A5" clip-path="url(#' + k + '-c)"/>' +
+        g("fr", '<path d="M196 53.1A64 64 0 0 1 196 158.9Z" fill="#E2BE7E" clip-path="url(#' + k + '-s)"/><path d="M196 56V128" stroke-dasharray="4 4" stroke-width="1.6"/>') +
+        g("fL", '<path d="M124 53.1A64 64 0 0 0 124 158.9Z" fill="#E2BE7E" clip-path="url(#' + k + '-s)"/><path d="M124 56V128" stroke-dasharray="4 4" stroke-width="1.6"/>') +
+        '<g stroke="none"><circle cx="138" cy="84" r="2.6" fill="#D9B06A"/><circle cx="184" cy="92" r="2.2" fill="#D9B06A"/><circle cx="150" cy="70" r="2" fill="#D9B06A"/></g>' +
+        g("fi", '<rect x="124" y="100" width="72" height="12" rx="6" fill="#6BBF59"/><rect x="128" y="108" width="64" height="9" rx="4.5" fill="#B5652C"/><circle cx="140" cy="102" r="4" fill="#E8483A"/><circle cx="168" cy="101" r="4" fill="#E8483A"/>') +
+        g("fb", '<path d="M100.6 128A64 64 0 0 0 219.4 128Z" fill="#E2BE7E"/><path d="M102 128H218" stroke-dasharray="4 4" stroke-width="1.6"/>')) +
+      '<g class="fa1" stroke="#2E7A4C" stroke-width="3.2" fill="none"><path d="M160 164V124"/><path d="M151 133L160 122L169 133"/></g><g class="fa2" stroke="#2E7A4C" stroke-width="3.2" fill="none"><path d="M240 96H206"/><path d="M215 87L204 96L215 105"/><path d="M80 96H114"/><path d="M105 87L116 96L105 105"/></g>' +
+      g("bu", '<g transform="rotate(-8 160 112)"><rect x="96" y="92" width="128" height="40" rx="20" fill="#F1D9A5"/><path d="M110 100Q160 92 210 100" stroke="#fff" stroke-opacity=".5" stroke-width="4" fill="none"/><ellipse cx="222" cy="112" rx="10" ry="20" fill="#F6E6C2"/><circle cx="220" cy="106" r="3.6" fill="#6BBF59"/><circle cx="224" cy="115" r="3.4" fill="#B5652C"/><circle cx="219" cy="120" r="2.6" fill="#E8483A"/></g>'),
+    css: k => chipsCss(k, WRAP, 6) +
+      ".gx-" + k + " .fa1,.gx-" + k + " .fa2{opacity:0}" + an(k, ".fa1", "A1", 6, "linear") + kf(k, "A1", "0%,20%{opacity:0;transform:translateY(8px)}24%{opacity:1;transform:none}34%{opacity:1}38%,100%{opacity:0}") + an(k, ".fa2", "A2", 6, "linear") + kf(k, "A2", "0%,40%{opacity:0}44%,54%{opacity:1}58%,100%{opacity:0}") + an(k, ".fi", "I", 6, "linear") + kf(k, "I", "0%{opacity:0;transform:translateY(-24px)}3%{opacity:0;transform:translateY(-24px);animation-timing-function:" + EO + "}12%,100%{opacity:1;transform:none}") +
+      an(k, ".fb", "B", 6, "linear", "transform-origin:50% 0") + kf(k, "B", "0%,22%{transform:scaleY(1)}23%{transform:scaleY(1);animation-timing-function:" + E + "}38%,100%{transform:scaleY(-1)}") +
+      an(k, ".fL", "L", 6, "linear", "transform-origin:100% 50%") + kf(k, "L", "0%,42%{transform:scaleX(1)}43%{transform:scaleX(1);animation-timing-function:" + E + "}58%,100%{transform:scaleX(-1)}") +
+      an(k, ".fr", "R", 6, "linear", "transform-origin:0 50%") + kf(k, "R", "0%,42%{transform:scaleX(1)}43%{transform:scaleX(1);animation-timing-function:" + E + "}58%,100%{transform:scaleX(-1)}") +
+      an(k, ".fl", "F", 6, "linear") + kf(k, "F", "0%,60%{opacity:1;transform:none}61%{opacity:1;transform:none;animation-timing-function:" + EI + "}70%{opacity:0;transform:scale(.7,.4)}100%{opacity:0;transform:scale(.7,.4)}") +
+      an(k, ".bu", "U", 6, "linear") + kf(k, "U", "0%,64%{opacity:0;transform:scale(.6,.5)}74%{opacity:1;transform:none;animation-timing-function:" + EO + "}94%{opacity:1;transform:none}100%{opacity:0}")};
+  const MAKI = [["Garnir",0,22],["Rouler",22,70],["Couper",70,95]];
+  A.rouler_b = {t:"Rouler des makis", v:"comment rouler des makis", c:["#E2EFE3","#F5FBF5"],
+    d: k => table(184, "#E6D2AE") + chips(k, MAKI) + '<rect x="70" y="44" width="180" height="134" rx="6" fill="#D9C28A"/>' + [54,64,74,84,94,104,114,124,134,144,154,164,174].map(y => '<path d="M71 ' + y + 'H249" stroke="#B89A5C" stroke-width="1.6"/>').join("") +
+      g("sh", '<rect x="90" y="50" width="140" height="112" rx="3" fill="#2F4A35"/><rect x="94" y="62" width="132" height="98" rx="3" fill="#FBF6EC"/>' + g("fi", '<rect x="94" y="132" width="132" height="10" rx="5" fill="#F08A5C"/><rect x="94" y="142" width="132" height="8" rx="4" fill="#6BBF59"/>')) +
+      g("rl", '<rect x="88" y="0" width="144" height="30" rx="8" fill="#2F4A35"/><path d="M96 8H224M96 22H224" stroke="#4E6B54" stroke-width="2"/>', T(0, 140)) +
+      g("cut", [100,134,168,202].map(x => '<g' + T(x + 8, 110) + '><circle r="16" fill="#2F4A35"/><circle r="12" fill="#FBF6EC" stroke-width="1.4"/><circle cx="-2" r="5" fill="#F08A5C" stroke-width="1.2"/><circle cx="4" cy="3" r="3" fill="#6BBF59" stroke-width="1.2"/></g>').join("")),
+    css: k => chipsCss(k, MAKI, 6) +
+      an(k, ".fi", "I", 6, "linear") + kf(k, "I", "0%{opacity:0}3%{opacity:0;transform:translateY(-20px);animation-timing-function:" + EO + "}12%,100%{opacity:1;transform:none}") +
+      ".gx-" + k + " .rl{opacity:0}" + an(k, ".rl", "R", 6, "linear") + kf(k, "R", "0%,21%{opacity:0;transform:translate(0,140px)}22%{opacity:1;transform:translate(0,140px);animation-timing-function:" + E + "}66%{opacity:1;transform:translate(0,52px)}70%,100%{opacity:0;transform:translate(0,52px)}") +
+      an(k, ".sh", "S", 6, "linear", "transform-origin:50% 0") + kf(k, "S", "0%,22%{opacity:1;transform:scaleY(1);animation-timing-function:" + E + "}66%{opacity:1;transform:scaleY(.08)}70%,100%{opacity:0;transform:scaleY(.08)}") +
+      ".gx-" + k + " .cut{opacity:0}" + an(k, ".cut", "C", 6, "linear") + kf(k, "C", "0%,70%{opacity:0;transform:scale(.6)}78%{opacity:1;transform:none;animation-timing-function:" + EO + "}95%{opacity:1}100%{opacity:0}")};
 
   /* 22 · Brochettes */
+  const MEAT = '<rect x="-12" y="-12" width="24" height="24" rx="6" fill="#A85A2A"/><path d="M-7-12L-12-7M3-12L-12 3M12-6L-6 12" stroke="#7A3E1A" stroke-width="2.4"/>';
+  const PEP = '<path d="M-12-10Q0-16 12-10L12 10Q0 16-12 10Z" fill="#E8483A"/><path d="M-7-9Q0-12 7-9" stroke="#F7A39A" stroke-width="2.4" fill="none"/>';
+  const ONI = '<path d="M-11-12Q0-16 11-12V12Q0 16-11 12Z" fill="#FBF3E1"/><path d="M-6-12V12M1-13V13" stroke="#E2C48C" stroke-width="1.6"/>';
+  const ZUC = '<ellipse rx="8" ry="13" fill="#4E9A5A"/><ellipse rx="5.6" ry="10" fill="#E6F2CF" stroke-width="1.2"/>';
   A.brochettes = {t:"Monter les brochettes", v:"monter des brochettes", c:["#F5DCC2","#FFF3E6"],
-    d: () => table(170) + '<path d="M20 108L262 92" stroke="' + WDD + '" stroke-width="5"/><path d="M20 108L262 92" stroke="' + WD + '" stroke-width="2"/>' +
-      [[206,"#B5652C"],[178,"#E8562F"],[150,"#B5652C"],[122,"#F6EBCF"],[94,"#B5652C"],[66,"#5DB86A"]].map(([x,c], i) => g("cb cb" + i, '<rect x="' + (x - 11) + '" y="' + (97 - (x - 20)*0.066 - 9 + 10).toFixed(1) + '" width="22" height="22" rx="5" fill="' + c + '"/>')).join("") +
-      hand(GRIP, 270, 92, -4, 0.95) + '<path d="M28 100L14 109L28 116" fill="#E7B579" stroke-width="1.6"/>',
-    css: k => [0,1,2,3,4,5].map(i => an(k, ".cb" + i, "C", 4.2, EO, "animation-delay:" + (i*0.45 - 4.2).toFixed(2) + "s")).join("") + kf(k, "C", "0%{opacity:0;transform:translate(-90px,8px)}12%{opacity:1;transform:none}88%{opacity:1;transform:none}100%{opacity:0}")};
+    d: () => table(182) + '<path d="M58 46L262 158" stroke="' + WDD + '" stroke-width="6"/><path d="M58 46L262 158" stroke="' + WD + '" stroke-width="2.4"/><path d="M58 46L50 40" stroke="' + WDD + '" stroke-width="3"/>' +
+      [MEAT, PEP, ONI, MEAT, ZUC, MEAT].map((p, i) => { const d = 210 - i*30, x = 58 + 0.877*d, y = 46 + 0.481*d; return g("pc pc" + i, '<g' + T(x.toFixed(1), y.toFixed(1), 29) + ">" + p + "</g>"); }).join("") +
+      hand(GRIP, 262, 158, 29, 0.95),
+    css: k => [0,1,2,3,4,5].map(i => { const d = 210 - i*30; return an(k, ".pc" + i, "C" + i, 5, "linear", "animation-delay:" + (i*0.6 - 5).toFixed(1) + "s") + kf(k, "C" + i, "0%{opacity:0;transform:translate(" + (-(d - 6)*0.877).toFixed(1) + "px," + (-(d - 6)*0.481).toFixed(1) + "px) scale(.4)}4%{opacity:1;transform:translate(" + (-(d - 6)*0.877).toFixed(1) + "px," + (-(d - 6)*0.481).toFixed(1) + "px) scale(1);animation-timing-function:" + E + "}16%,92%{opacity:1;transform:none}100%{opacity:0;transform:none}"); }).join("")};
 
   /* 23 · Laisser reposer */
-  A.reposer = {t:"Laisser reposer", v:"laisser mariner au frais", c:["#DCE8F7","#F3F8FE"],
-    d: () => table(176, "#DCE3EA", "#C5CFD9") + bowl(130, 116, 90, "#FFFFFF", "#D9824A", 0.66) +
-      '<path d="M40 116Q130 84 220 116" fill="#fff" fill-opacity=".55" stroke-width="2"/>' + g("sn", '<path d="M70 104Q96 94 124 92" stroke="#fff" stroke-width="5" fill="none"/>') +
-      '<g' + T(254, 76) + '><circle r="34" fill="#fff"/><circle r="27" fill="#F4F3EF" stroke-width="1.4"/>' + [0,30,60,90,120,150,180,210,240,270,300,330].map(a => '<path d="M0-27v' + (a % 90 ? 4 : 7) + '" stroke-width="2" transform="rotate(' + a + ')"/>').join("") +
-      '<path class="ha" d="M0 2V-20" stroke="#E8562F" stroke-width="3.4"/><path d="M0 0L10 6" stroke-width="3"/><circle r="3.4" fill="' + L + '"/><rect x="-8" y="-44" width="16" height="9" rx="3" fill="#AEB8C2"/></g>' +
-      '<g' + T(48, 48) + '><g class="fz"><path d="M0-16V16M-14-8L14 8M-14 8L14-8" stroke="#6FA8E6" stroke-width="3.4"/><path d="M-4-12L0-8 4-12M-4 12L0 8 4 12" stroke="#6FA8E6" stroke-width="2.4" fill="none"/></g></g>',
-    css: k => an(k, ".ha", "H", 4, "linear", "transform-origin:50% 100%") + kf(k, "H", "to{transform:rotate(360deg)}") +
-      an(k, ".sn", "S", 3, E) + kf(k, "S", "0%,100%{opacity:.4;transform:translateX(-10px)}50%{opacity:1;transform:translateX(16px)}") +
-      an(k, ".fz", "F", 3, E, "transform-origin:50% 50%") + kf(k, "F", "0%,100%{transform:rotate(0) scale(1)}50%{transform:rotate(30deg) scale(1.12)}")};
+  A.reposer = {t:"Laisser reposer", v:"laisser reposer ou mariner au frais", c:["#DCE8F7","#F3F8FE"],
+    d: () => table(178, "#DCE3EA", "#C5CFD9") + bowl(120, 112, 90, "#FFFFFF", "#D9824A", 0.68) +
+      '<path d="M28 112Q30 98 120 96Q210 98 212 112" fill="#EAF4FE" fill-opacity=".55" stroke="#8FB3D6" stroke-width="2"/><path d="M30 112Q120 124 210 112" fill="none" stroke="#8FB3D6" stroke-width="2"/>' +
+      '<g' + T(254, 92) + '><circle r="40" fill="#fff"/><circle r="31" fill="#F4F3EF" stroke-width="1.6"/><circle class="pie" r="15.5" fill="none" stroke="#F2B45A" stroke-width="31" transform="rotate(-90)" pathLength="100"/>' +
+      [0,30,60,90,120,150,180,210,240,270,300,330].map(a => '<path d="M0-31v' + (a % 90 ? 4 : 7) + '" stroke-width="2" transform="rotate(' + a + ')"/>').join("") +
+      '<g class="ha"><path d="M0 0V-26" stroke="' + L + '" stroke-width="3.4"/></g><circle r="3.6" fill="' + L + '"/><rect x="-9" y="-52" width="18" height="10" rx="3.5" fill="#AEB8C2"/></g>' +
+      '<g' + T(44, 46) + '><g class="fz"><path d="M0-16V16M-14-8L14 8M-14 8L14-8" stroke="#6FA8E6" stroke-width="3.4"/><path d="M-4-12L0-8 4-12M-4 12L0 8 4 12" stroke="#6FA8E6" stroke-width="2.4" fill="none"/></g></g>',
+    css: k => ".gx-" + k + " .pie{stroke:#F2B45A;stroke-dasharray:0 100;animation:" + k + "Pi 5s linear infinite}" + kf(k, "Pi", "0%{stroke-dasharray:0 100}92%{stroke-dasharray:100 0;opacity:1}100%{stroke-dasharray:100 0;opacity:0}") +
+      an(k, ".ha", "H", 5, "linear", "transform-box:view-box;transform-origin:0 0") + kf(k, "H", "to{transform:rotate(360deg)}") +
+      an(k, ".fz", "F", 3, E) + kf(k, "F", "0%,100%{transform:rotate(0) scale(1)}50%{transform:rotate(30deg) scale(1.12)}")};
 
   /* 24 · Assaisonner */
   const SHAKER = (body, cap) => '<path d="M-16-26Q-16-42 0-42Q16-42 16-26V30Q16 40 6 40H-6Q-16 40-16 30Z" fill="' + body + '"/><path d="M-16-26Q-16-42 0-42Q16-42 16-26Z" fill="' + cap + '"/>' + [[-6,-32],[0,-36],[6,-32]].map(([x,y]) => '<circle cx="' + x + '" cy="' + y + '" r="1.8" fill="' + L + '" stroke="none"/>').join("");
   A.assaisonner = {t:"Assaisonner", v:"assaisonner et rectifier", c:["#EFEBE3","#FAF8F3"],
-    d: () => table(176, "#E4DCCD", "#CFC5B3") + '<ellipse cx="150" cy="168" rx="104" ry="18" fill="#fff"/><ellipse cx="150" cy="165" rx="80" ry="12" fill="#F4F3EF"/><path d="M98 166Q150 140 202 166Z" fill="#C2622D"/>' +
-      [0,1,2,3,4,5].map(i => '<circle class="gr gr' + (i % 3) + '" cx="' + (166 + i*7) + '" cy="' + (100 + (i % 2)*8) + '" r="2" fill="' + (i % 2 ? "#3B3632" : "#fff") + '" stroke-width="1"/>').join("") +
-      g("sa", g("", SHAKER("#FFFFFF", "#C9D2DA") + hand(GRIP, 0, 12, 90, 0.85), T(206, 62, 217))),
-    css: k => an(k, ".sa", "S", 0.55, E) + kf(k, "S", "0%,100%{transform:translate(0,0) rotate(0)}50%{transform:translate(6px,-10px) rotate(-8deg)}") +
-      [0,1,2].map(i => an(k, ".gr" + i, "G", 0.9, EI, "animation-delay:-" + (i*0.3).toFixed(1) + "s")).join("") + kf(k, "G", "0%{opacity:0;transform:none}15%{opacity:1}100%{opacity:0;transform:translateY(58px)}")};
+    d: () => table(176, "#E4DCCD", "#CFC5B3") + '<ellipse cx="140" cy="166" rx="112" ry="22" fill="#fff"/><ellipse cx="140" cy="162" rx="86" ry="14" fill="#F4F3EF"/>' +
+      '<path d="M82 164Q86 138 120 134Q156 130 176 142Q196 150 196 164Z" fill="#C46B3A"/><path d="M98 150Q120 142 146 144" stroke="#E39A62" stroke-width="3" fill="none"/>' +
+      [0,1,2,3,4,5,6,7].map(i => '<rect class="gr gr' + i + '" x="' + (150 + (i % 4)*6 - 9) + '" y="' + (86 + (i % 2)*4) + '" width="3.4" height="3.4" rx=".8" fill="#fff" stroke-width="1.1"/>').join("") +
+      g("sa", g("", SHAKER("#FFFFFF", "#C9D2DA") + hand(GRIP, 0, 12, 90, 0.85), T(196, 46, 217))) +
+      g("ml", '<path d="M228 40q8 6 0 14M238 34q12 10 0 24" stroke="' + L + '" stroke-opacity=".45" stroke-width="2.2" fill="none"/>'),
+    css: k => an(k, ".sa", "S", 0.5, E) + kf(k, "S", "0%,100%{transform:translate(0,0) rotate(0)}50%{transform:translate(6px,-10px) rotate(-7deg)}") +
+      an(k, ".ml", "M", 0.5, E) + kf(k, "M", "0%,100%{opacity:.2}50%{opacity:1}") +
+      [0,1,2,3,4,5,6,7].map(i => an(k, ".gr" + i, "G", 1, EI, "animation-delay:-" + (i*0.125).toFixed(3) + "s")).join("") +
+      kf(k, "G", "0%{opacity:0;transform:none}12%{opacity:1}88%{opacity:1;transform:translate(-14px,52px) rotate(90deg)}100%{opacity:0;transform:translate(-15px,56px) rotate(100deg)}")};
 
   /* 25 · Servir */
   A.servir = {t:"Servir", v:"dresser une belle assiette", c:["#E2EFE3","#F5FBF5"],
@@ -353,13 +443,15 @@ const GART = (() => {
   A.microondes = {t:"Au micro-ondes", v:"réchauffer au micro-ondes", c:["#EFEBE3","#FAF8F3"],
     d: () => table(178, "#E4DCCD", "#CFC5B3") + '<rect x="40" y="34" width="240" height="144" rx="18" fill="#3B3632"/><rect x="56" y="50" width="160" height="112" rx="10" fill="#211E1B"/>' +
       '<rect class="gl" x="62" y="56" width="148" height="100" rx="8" fill="#F7D88A" stroke="none"/>' +
-      g("pl", '<ellipse cx="136" cy="140" rx="54" ry="10" fill="#fff" fill-opacity=".85"/><path d="M110 138Q112 116 136 114Q160 116 162 138Z" fill="#C2622D"/>') +
-      '<rect x="228" y="52" width="40" height="22" rx="5" fill="#141412"/><text class="tm" x="248" y="68" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="12" font-weight="800" fill="#7EE0A1" stroke="none">1:30</text>' +
+      '<ellipse cx="136" cy="140" rx="54" ry="10" fill="#fff" fill-opacity=".85"/><path d="M110 138Q112 116 136 114Q160 116 162 138Z" fill="#C2622D"/>' +
+      [0,1,2].map(i => '<path class="hw hw' + i + '" d="M' + (122 + i*14) + ' 108c-5-6 5-10 0-16c-4-5 4-9 0-14" stroke="#fff" stroke-width="2.6" fill="none"/>').join("") +
+      '<rect x="228" y="52" width="40" height="22" rx="5" fill="#141412"/>' + ["1:30","1:00","0:30","0:00"].map((t, i) => '<text class="tm tm' + i + '" x="248" y="68" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="12" font-weight="800" fill="#7EE0A1" stroke="none">' + t + "</text>").join("") +
       '<circle cx="248" cy="96" r="9" fill="#55524B"/><circle cx="248" cy="124" r="9" fill="#55524B"/><rect x="232" y="144" width="32" height="12" rx="6" fill="#55524B"/>' +
       g("di", '<path d="M276 30l12-10M282 42l16-4M270 22l4-14" stroke="#F2A72B" stroke-width="3"/>'),
-    css: k => an(k, ".pl", "P", 3, E, "transform-origin:50% 50%") + kf(k, "P", "0%,100%{transform:translateX(-12px) scaleX(.92)}50%{transform:translateX(12px) scaleX(1)}") +
-      an(k, ".gl", "G", 1.5, E) + kf(k, "G", "0%,100%{opacity:1}50%{opacity:.8}") +
-      an(k, ".di", "D", 3, EO, "transform-origin:0 100%") + kf(k, "D", "0%,80%{opacity:0;transform:scale(.6)}88%{opacity:1;transform:scale(1.1)}100%{opacity:0;transform:scale(1)}")};
+    css: k => ".gx-" + k + " .tm{opacity:0}" + [0,1,2,3].map(i => an(k, ".tm" + i, "T" + i, 4, "linear") + kf(k, "T" + i, (i ? "0%," + (i*20 - 0.3) + "%{opacity:0}" : "") + (i*20) + "%," + (i < 3 ? i*20 + 20.3 : 99) + "%{opacity:1}" + (i < 3 ? (i*20 + 20.6) + "%," : "") + "100%{opacity:0}")).join("") +
+      an(k, ".gl", "G", 4, "linear") + kf(k, "G", "0%,78%{opacity:1}82%,100%{opacity:.25}") +
+      [0,1,2].map(i => an(k, ".hw" + i, "H", 1.6, "ease-out", "animation-delay:-" + (i*0.5).toFixed(1) + "s")).join("") + kf(k, "H", "0%{opacity:0;transform:translateY(6px)}35%{opacity:.9}100%{opacity:0;transform:translateY(-8px)}") +
+      an(k, ".di", "D", 4, EO, "transform-origin:0 100%") + kf(k, "D", "0%,80%{opacity:0;transform:scale(.6)}86%{opacity:1;transform:scale(1.1)}100%{opacity:0;transform:scale(1)}")};
 
   /* 29 · Presser */
   A.presser = {t:"Presser", v:"presser un citron", c:["#FBF2C4","#FFFBE8"],
@@ -418,15 +510,21 @@ const GART = (() => {
       an(k, ".c2", "Y", 4.4, "linear") + kf(k, "Y", "0%,36%{opacity:0}40%,66%{opacity:1}70%,100%{opacity:0}") + an(k, ".c3", "B", 4.4, "linear") + kf(k, "B", "0%,66%{opacity:0}70%,96%{opacity:1}100%{opacity:0}")};
 
   /* 34 · Plier les raviolis */
+  const PLI = [["Garnir",0,20],["Mouiller",20,40],["Plier",40,60],["Pincer",60,95]];
   A.plier = {t:"Plier les raviolis", v:"plier des gyozas", c:["#E2EFE3","#F5FBF5"],
-    d: () => boardBand(140) + '<circle cx="66" cy="160" r="30" fill="#FBF6EC"/><circle cx="66" cy="160" r="9" fill="#D9824A"/><circle cx="62" cy="157" r="2.6" fill="#5DB86A" stroke="none"/>' +
-      '<path d="M120 164A40 40 0 0 0 200 164Z" fill="#FBF6EC"/><circle cx="160" cy="166" r="9" fill="#D9824A"/>' + g("fo", '<path d="M120 164A40 40 0 0 1 200 164Z" fill="#F4E8D2"/>') +
-      g("pl", [0,1,2,3,4].map(i => '<path d="M' + (134 + i*8) + " " + (146 - (i === 2 ? 4 : i % 2 ? 2 : 0)) + 'l3 7" stroke-width="2"/>').join("")) +
-      '<path d="M226 168Q254 128 282 168Z" fill="#F1E3C6"/><path d="M236 156l4 6M246 148l3 7M256 146v7M266 148l-3 7M276 156l-4 6" stroke-width="1.8"/>' +
-      drop(160, 112, "#6FA8E6", "wt", 0),
-    css: k => an(k, ".fo", "F", 3, E, "transform-origin:50% 100%") + kf(k, "F", "0%,15%{transform:scaleY(1)}45%,100%{transform:scaleY(-1)}") +
-      an(k, ".pl", "P", 3, "linear") + kf(k, "P", "0%,50%{opacity:0}60%,95%{opacity:1}100%{opacity:0}") +
-      an(k, ".wt", "W", 3, EI) + kf(k, "W", "0%{opacity:0;transform:none}5%{opacity:1}15%{opacity:0;transform:translateY(30px)}100%{opacity:0}")};
+    d: k => boardBand(160) + chips(k, PLI) +
+      '<path d="M90 112A70 70 0 0 0 230 112Z" fill="#FBF6EC"/><path d="M90 112A70 70 0 0 0 230 112" fill="none" stroke-width="2.4"/>' +
+      g("tp", '<path d="M90 112A70 70 0 0 1 230 112Z" fill="#FBF6EC"/>') +
+      g("ba", '<circle cx="160" cy="112" r="20" fill="#D9824A"/><circle cx="153" cy="106" r="3.4" fill="#6BBF59" stroke="none"/><circle cx="166" cy="116" r="3" fill="#F2B28A" stroke="none"/>') +
+      '<circle class="wet" cx="160" cy="112" r="66" fill="none" stroke="#6FA8E6" stroke-width="4" stroke-dasharray="415" pathLength="415" stroke-linecap="round"/>' +
+      g("tf", '<path d="M90 112A70 70 0 0 1 230 112Z" fill="#F1E3C6"/>') +
+      [0,1,2,3,4].map(i => { const a = Math.PI*(0.22 + i*0.14), c = Math.cos(a), sn = Math.sin(a); const p = r => (160 - r*c).toFixed(1) + " " + (112 + r*sn).toFixed(1); return '<path class="pz pz' + i + '" d="M' + p(69) + "L" + p(54) + '" stroke-width="2.6"/>'; }).join(""),
+    css: k => chipsCss(k, PLI, 6) +
+      an(k, ".ba", "B", 6, "linear") + kf(k, "B", "0%{opacity:0;transform:scale(.2)}4%{opacity:0;transform:scale(.2);animation-timing-function:" + EO + "}14%,49%{opacity:1;transform:none}50%,100%{opacity:0}") +
+      ".gx-" + k + " .wet{stroke-dashoffset:415;animation:" + k + "W 6s linear infinite}" + kf(k, "W", "0%,20%{stroke-dashoffset:415;opacity:1}38%{stroke-dashoffset:0;opacity:1}44%,100%{stroke-dashoffset:0;opacity:0}") +
+      ".gx-" + k + " .tf{opacity:0}" + an(k, ".tf", "F", 6, "linear", "transform-origin:50% 100%") + kf(k, "F", "0%,42%{opacity:0;transform:scaleY(1)}43%{opacity:1;transform:scaleY(1);animation-timing-function:" + E + "}58%,95%{opacity:1;transform:scaleY(-1)}100%{opacity:0;transform:scaleY(-1)}") +
+      an(k, ".tp", "T", 6, "linear") + kf(k, "T", "0%,42%{opacity:1}43%,96%{opacity:0}100%{opacity:1}") +
+      ".gx-" + k + " .pz{opacity:0}" + [0,1,2,3,4].map(i => an(k, ".pz" + i, "P" + i, 6, "linear") + kf(k, "P" + i, "0%," + (62 + i*5) + "%{opacity:0}" + (64 + i*5) + "%,95%{opacity:1}100%{opacity:0}")).join("")};
 
   /* 35 · Remplir le moule */
   A.moule = {t:"Remplir le moule", v:"verser la pâte dans le moule", c:["#FBEACB","#FFF7E8"],
@@ -438,8 +536,9 @@ const GART = (() => {
       an(k, ".po", "P", 3.4, "linear") + kf(k, "P", "0%,22%{opacity:0;stroke-dashoffset:0}28%,74%{opacity:1}80%,100%{opacity:0;stroke-dashoffset:-132}") +
       an(k, ".ba", "F", 3.4, E, "transform-origin:50% 100%") + kf(k, "F", "0%,24%{transform:scaleY(.12)}78%,100%{transform:scaleY(1)}")};
 
-  function svg(key){
+  function svg(key, hs){
     const a = A[key]; if (!a) return "";
+    HS = HSTY[hs || "A"];
     return '<svg class="art gx gx-' + key + '" viewBox="0 0 320 200" preserveAspectRatio="xMidYMid slice" role="img" aria-label="' + a.t + '"><style>' + KIT + a.css(key) + "</style>" +
       stage(key, a.c[0], a.c[1]) + '<g stroke="' + L + '" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round">' + a.d(key) + "</g></svg>";
   }
