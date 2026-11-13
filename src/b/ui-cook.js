@@ -109,7 +109,7 @@ function cookBody(r){
   const vq = g ? GX.G[g].v + (firstIng && !/four|servir|assaisonner|microondes/.test(g) ? " " + firstIng : "") : "recette " + r.n;
   let h = '<div class="wrapc' + anim + '"><figure class="fig' + (g ? "" : " photo") + '">' + (g ? GX.art(g, txt) : photo(r, "")) +
     ((heat || g) ? '<span class="tag white">' + (heat ? IC.fire + heat : esc(GX.G[g].t)) + "</span>" : "") +
-    '<a class="ytb" href="https://www.youtube.com/results?search_query=' + encodeURIComponent(vq) + '" target="_blank" rel="noopener">' + IC.video + (g ? "Voir le geste" : "Voir en vidéo") + "</a></figure>";
+    '<a class="ytb' + (/^(rouler|plier|couches)$/.test(g) ? " ic" : "") + '" aria-label="' + (g ? "Voir le geste en vidéo" : "Voir en vidéo") + '" href="https://www.youtube.com/results?search_query=' + encodeURIComponent(vq) + '" target="_blank" rel="noopener">' + IC.video + '<span class="yl">' + (g ? "Voir le geste" : "Voir en vidéo") + "</span></a></figure>";
   h += '<div class="stepn"><span class="num" aria-hidden="true">' + (i + 1) + '</span><p class="stxt" aria-live="polite"><span class="sr">Étape ' + (i + 1) + " : </span>" + CK.ann[i] + "</p></div>";
   if (ings.length) h += '<div class="cings">' + ings.map(([k,q]) => "<div><b>" + qtyLabel(k, q) + "</b><span>" + esc(I[k].n) + "</span></div>").join("") + "</div>";
   const m = timerOf(txt);

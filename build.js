@@ -1,12 +1,12 @@
 // Construit Biscuit : page d'artefact, fichier autonome et appli installable (PWA)
 const fs = require('fs'), path = require('path');
 const R = p => fs.readFileSync(path.join(__dirname, p), 'utf8');
-const VERSION = '2.0.3', CACHE = 'biscuit-v1';
+const VERSION = '2.1.0', CACHE = 'biscuit-v1';
 const DATA = ['ingredients.js','r1-matin.js','r2-france.js','r3-italie-inde.js','r4-asie-mexique.js','r5-monde.js','r6-plus.js']
   .concat(fs.readdirSync(path.join(__dirname, 'data')).filter(f => /^r[7-9]-.*\.js$/.test(f)).sort())
   .concat(['photos.js','d1-matin.js','d2-france-a.js','d3-france-b.js','d4-italie.js','d5-inde.js','d6-asie.js','d7-mexique-orient.js','d8-med-us-afrique.js'])
   .concat(fs.readdirSync(path.join(__dirname, 'data')).filter(f => /^d(9|1\d)-.*\.js$/.test(f)).sort((a, b) => parseInt(a.slice(1)) - parseInt(b.slice(1))));
-const SRC = ['core.js','gestures.js','ui-kit.js','ui-views.js','ui-sheets.js','ui-cook.js','ui-modes.js','ui-onboard.js','ui-main.js'];
+const SRC = ['core.js','gestures-art.js','gestures.js','ui-kit.js','ui-views.js','ui-sheets.js','ui-cook.js','ui-modes.js','ui-onboard.js','ui-main.js'];
 const data = DATA.map(f => R('data/' + f)).join('\n');
 const app = SRC.map(f => '/* ── ' + f + ' ── */\n' + R('src/b/' + f)).join('\n');
 const b64 = f => fs.readFileSync(path.join(__dirname, 'fonts', f)).toString('base64');

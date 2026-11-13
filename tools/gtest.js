@@ -1,6 +1,6 @@
 const fs=require('fs');const d=require('./load.js');
 const esc=s=>String(s);
-const GX=new Function('esc',fs.readFileSync(__dirname+'/../src/b/gestures.js','utf8')+';return GX;')(esc);
+const GX=new Function('esc',fs.readFileSync(__dirname+'/../src/b/gestures-art.js','utf8')+'\n'+fs.readFileSync(__dirname+'/../src/b/gestures.js','utf8')+';return GX;')(esc);
 let tot=0,hit=0;const cnt={},miss=[],ex={};
 for(const id in d.DETAILS){ for(const s of d.DETAILS[id].steps){ tot++; const k=GX.match(s); if(k){hit++;cnt[k]=(cnt[k]||0)+1;(ex[k]=ex[k]||[]).push(s);} else miss.push(s);} }
 console.log('gestes',GX.keys.length,'couverture',tot,hit,(hit/tot*100).toFixed(1)+'%');

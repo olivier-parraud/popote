@@ -77,18 +77,19 @@ const GART = (() => {
   const KIT = ".gx .gk-fl{transform-box:fill-box;transform-origin:50% 100%;animation:gkFl 1.2s ease-in-out infinite}@keyframes gkFl{0%,100%{transform:scale(1,1)}30%{transform:scale(.86,1.14)}65%{transform:scale(1.07,.9)}}" +
     ".gx .gk-st{stroke-dasharray:60 140;stroke-dashoffset:60;animation:gkSt 3s cubic-bezier(.4,0,.3,1) infinite}@keyframes gkSt{0%{stroke-dashoffset:60;opacity:0}20%{opacity:.9}100%{stroke-dashoffset:-100;opacity:0}}" +
     ".gx .gk-ar{animation:gkAr 1.4s linear infinite}@keyframes gkAr{to{stroke-dashoffset:-24}}" +
-    "@media (prefers-reduced-motion:reduce){.gx *{animation:none!important}.gx .gk-st{stroke-dasharray:none;opacity:.75}}" +
-    "html.rm .gx *{animation:none!important}html.rm .gx .gk-st{stroke-dasharray:none;opacity:.75}";
+    "@media (prefers-reduced-motion:reduce){.gx *{animation:none!important}.gx .gk-st{stroke-dasharray:none;opacity:.75}.gx-disposer .pi,.gx-brochettes .pc,.gx-couches .l0,.gx-couches .l2,.gx-microondes .tm0{opacity:1!important}}" +
+    "html.rm .gx *{animation:none!important}html.rm .gx .gk-st{stroke-dasharray:none;opacity:.75}html.rm .gx-disposer .pi,html.rm .gx-brochettes .pc,html.rm .gx-couches .l0,html.rm .gx-couches .l2,html.rm .gx-microondes .tm0{opacity:1!important}";
 
   const A = {};
   const kf = (k, name, frames) => "@keyframes " + k + name + "{" + frames + "}";
   const an = (k, sel, name, dur, ease, extra) => ".gx-" + k + " " + sel + "{transform-box:fill-box;transform-origin:50% 50%;animation:" + k + name + " " + dur + "s " + (ease || E) + " infinite" + (extra ? ";" + extra : "") + "}";
   // Étapes affichées en haut du dessin ; la pastille active s'allume en vert pendant sa fenêtre (en % de la boucle)
   const chips = (k, items) => {
-    const w = items.map(([t]) => 18 + t.length*6.3), gap = 6, tot = w.reduce((a, b) => a + b, 0) + gap*(items.length - 1);
-    let x = 160 - tot/2, h = "";
-    items.forEach(([t], i) => { h += '<g class="cp cp' + i + '"><rect x="' + x.toFixed(1) + '" y="10" width="' + w[i].toFixed(1) + '" height="22" rx="11" fill="#fff" stroke-width="1.6"/><text x="' + (x + w[i]/2).toFixed(1) + '" y="25" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="11.5" font-weight="700" fill="' + L + '" stroke="none">' + t + "</text></g>" +
-      '<g class="ca ca' + i + '"><rect x="' + x.toFixed(1) + '" y="10" width="' + w[i].toFixed(1) + '" height="22" rx="11" fill="#2E7A4C" stroke="#2E7A4C" stroke-width="1.6"/><text x="' + (x + w[i]/2).toFixed(1) + '" y="25" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="11.5" font-weight="700" fill="#fff" stroke="none">' + t + "</text></g>"; x += w[i] + gap; });
+    const t0 = items.map(([t]) => 18 + t.length*6.3).reduce((a, b) => a + b, 0) + 6*(items.length - 1), f = Math.min(1, 232/t0), fs = (11.5*f).toFixed(1);
+    const w = items.map(([t]) => (18 + t.length*6.3)*f), gap = 6*f, tot = t0*f;
+    let x = 14, h = "";
+    items.forEach(([t], i) => { h += '<g class="cp cp' + i + '"><rect x="' + x.toFixed(1) + '" y="10" width="' + w[i].toFixed(1) + '" height="22" rx="11" fill="#fff" stroke-width="1.6"/><text x="' + (x + w[i]/2).toFixed(1) + '" y="25" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="' + fs + '" font-weight="700" fill="' + L + '" stroke="none">' + t + "</text></g>" +
+      '<g class="ca ca' + i + '"><rect x="' + x.toFixed(1) + '" y="10" width="' + w[i].toFixed(1) + '" height="22" rx="11" fill="#2E7A4C" stroke="#2E7A4C" stroke-width="1.6"/><text x="' + (x + w[i]/2).toFixed(1) + '" y="25" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="' + fs + '" font-weight="700" fill="#fff" stroke="none">' + t + "</text></g>"; x += w[i] + gap; });
     return h;
   };
   const chipsCss = (k, items, dur) => ".gx-" + k + " .ca{opacity:0}" + items.map(([, a, b], i) => ".gx-" + k + " .ca" + i + "{animation:" + k + "Ca" + i + " " + dur + "s linear infinite}@keyframes " + k + "Ca" + i + "{0%," + Math.max(0, a - 0.01) + "%{opacity:0}" + (a + 0.5) + "%," + (b - 0.5) + "%{opacity:1}" + b + "%,100%{opacity:0}}").join("");
@@ -105,16 +106,6 @@ const GART = (() => {
       an(k, ".ha", "H", 1.2, E) + kf(k, "H", "0%,58%{transform:none}75%{transform:translateX(5px)}100%{transform:none}") +
       [0,1,2,3].map(i => an(k, ".sl" + i, "S" + i, 4.8, "linear", "animation-delay:" + (i*1.2 - 4.8 + 0.6).toFixed(1) + "s")).join("") +
       [0,1,2,3].map(i => kf(k, "S" + i, "0%{opacity:0;transform:none}2%{opacity:1;transform:none;animation-timing-function:" + EI + "}12%{opacity:1;transform:translate(" + (26 + i*16) + "px,22px) rotate(80deg);animation-timing-function:" + EO + "}16%,92%{opacity:1;transform:translate(" + (26 + i*16) + "px,22px) rotate(90deg)}100%{opacity:0;transform:translate(" + (26 + i*16) + "px,22px) rotate(90deg)}")).join("")};
-  A.emincer_b = {t:"Émincer", v:"comment émincer un oignon", c:["#F6DEBF","#FFF6E8"],
-    d: () => boardBand(150) +
-      '<path d="M40 168C40 118 68 96 112 96C156 96 196 118 196 168Z" fill="#F1D19C"/><path d="M58 168C58 128 80 110 112 110C144 110 176 128 178 168M80 168C80 138 94 124 112 124C130 124 152 138 156 168" fill="none" stroke="#C99A5C" stroke-width="1.8"/><path d="M40 168C40 118 68 96 112 96C156 96 196 118 196 168" fill="none" stroke="#B9783A" stroke-width="4"/>' +
-      [0,1,2,3].map(i => g("sl sl" + i, '<g' + T(208, 168) + '><path d="M0 0C0-34 12-56 20-60" fill="none" stroke="' + L + '" stroke-width="9"/><path d="M0 0C0-34 12-56 20-60" fill="none" stroke="#F6E2BC" stroke-width="5"/><path d="M0 0C0-34 12-56 20-60" fill="none" stroke="#E2C48C" stroke-width="1.2"/></g>')).join("") +
-      g("ha", hand(CLAW, 166, 108, 10, 1)) +
-      g("kn", knifeHand(192, 172, -52)),
-    css: k => an(k, ".kn", "K", 1.2, E) + kf(k, "K", "0%,100%{transform:translate(20px,-26px)}42%,58%{transform:translate(0,0)}") +
-      an(k, ".ha", "H", 1.2, E) + kf(k, "H", "0%,58%{transform:none}75%{transform:translateX(5px)}100%{transform:none}") +
-      [0,1,2,3].map(i => an(k, ".sl" + i, "S" + i, 4.8, "linear", "animation-delay:" + (i*1.2 - 4.8 + 0.6).toFixed(1) + "s;transform-origin:0 100%")).join("") +
-      [0,1,2,3].map(i => kf(k, "S" + i, "0%{opacity:0;transform:none}2%{opacity:1;transform:none;animation-timing-function:" + EO + "}14%,92%{opacity:1;transform:translate(" + (14 + i*20) + "px,0) rotate(" + (24 + i*6) + "deg)}100%{opacity:0;transform:translate(" + (14 + i*20) + "px,0) rotate(" + (24 + i*6) + "deg)}")).join("")};
 
   /* 2 · Couper en dés */
   A.des = {t:"Couper en dés", v:"couper en dés technique", c:["#F6DEBF","#FFF6E8"],

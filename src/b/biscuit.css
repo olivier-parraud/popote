@@ -598,69 +598,11 @@ html[data-theme="dark"] .ringcard{background:var(--surface2)}
   .days{gap:3px}
   .day{border-radius:14px}
 }
+.cook .fig .ytb.ic .yl{display:none}.cook .fig .ytb.ic{width:34px;padding:0;justify-content:center}
+@media (max-width:369px){.cook .fig .ytb .yl{display:none}.cook .fig .ytb{width:34px;padding:0;justify-content:center}}
 /* ── Mouvement réduit ── */
 html.rm *,html.rm *::before,html.rm *::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
-
-/* ── Gestes animés (le dernier état = la pose de repos, pour le mouvement réduit) ── */
-.gart *{transform-box:fill-box}
-.gart .g-knife{transform-origin:100% 50%;animation:gChop 1.15s var(--ease) infinite}
-@keyframes gChop{0%,62%,100%{transform:none}30%{transform:translateY(-6px) rotate(9deg)}}
-.gart .g-rock{transform-origin:100% 50%;animation:gRock .7s ease-in-out infinite}
-@keyframes gRock{0%,100%{transform:none}50%{transform:rotate(7deg) translateY(-2px)}}
-.gart .g-slide{animation:gSlide 1.3s ease-in-out infinite}
-@keyframes gSlide{0%,100%{transform:none}50%{transform:translateX(-22px)}}
-.gart .g-rub{animation:gRub .55s ease-in-out infinite}
-@keyframes gRub{0%,100%{transform:none}50%{transform:translate(-8px,-14px)}}
-.gart .g-press{animation:gPress 1.1s var(--ease) infinite}
-@keyframes gPress{0%,100%{transform:none}45%{transform:translateY(6px)}}
-.gart .g-flame{transform-origin:50% 100%;animation:gFlame .9s ease-in-out infinite}
-@keyframes gFlame{0%,100%{transform:none}50%{transform:scale(.86,1.14)}}
-.gart .g-steam{animation:gSteam 2.4s ease-in-out infinite}
-@keyframes gSteam{0%,100%{transform:none;opacity:1}50%{transform:translateY(-7px);opacity:.25}}
-.gart .g-spat{transform-origin:0 0;animation:gSpat 1.4s ease-in-out infinite}
-@keyframes gSpat{0%,100%{transform:none}50%{transform:rotate(-9deg)}}
-.gart .g-sizzle{animation:gSizzle .5s steps(2) infinite}
-@keyframes gSizzle{0%,100%{transform:none}50%{transform:translateY(-1px)}}
-.gart .g-lid{transform-origin:20% 100%;animation:gLid 1.6s ease-in-out infinite}
-@keyframes gLid{0%,70%,100%{transform:none}78%{transform:rotate(-4deg) translateY(-2px)}86%{transform:rotate(2deg)}}
-.gart .g-bubble{transform-origin:50% 50%;animation:gBubble 1.4s ease-in-out infinite}
-@keyframes gBubble{0%,100%{transform:none}50%{transform:scale(1.5) translateY(-2px)}}
-.gart .g-drop{animation:gDrop 1.2s ease-in infinite}
-@keyframes gDrop{0%,100%{transform:none;opacity:1}70%{transform:translateY(9px);opacity:0}}
-.gart .g-glow{animation:gGlow 2s ease-in-out infinite}
-@keyframes gGlow{0%,100%{opacity:1}50%{opacity:.72}}
-.gart .g-dip{animation:gPress 1.6s ease-in-out infinite}
-.gart .g-flip{transform-origin:50% 50%;animation:gFlip 1.8s var(--ease) infinite}
-@keyframes gFlip{0%,100%{transform:none}35%{transform:translateY(-22px) scaleY(-.6)}55%{transform:translateY(-16px) scaleY(-1)}75%{transform:translateY(2px)}}
-.gart .g-whisk{transform-origin:50% 0;animation:gWhisk .45s ease-in-out infinite}
-@keyframes gWhisk{0%,100%{transform:none}50%{transform:rotate(-14deg)}}
-.gart .g-fall{animation:gFall 1.4s ease-in infinite}
-@keyframes gFall{0%,100%{transform:none;opacity:1}75%{transform:translateY(16px);opacity:0}}
-.gart .g-stir{transform-origin:100% 0;animation:gStir 1.6s ease-in-out infinite}
-@keyframes gStir{0%,100%{transform:none}50%{transform:rotate(14deg)}}
-.gart .g-place{animation:gPlace 2s var(--ease) infinite}
-@keyframes gPlace{0%,100%{transform:none}50%{transform:translateY(-12px)}}
-.gart .g-spread{transform-origin:100% 50%;animation:gSpread 1.3s ease-in-out infinite}
-@keyframes gSpread{0%,100%{transform:none}50%{transform:translateX(-26px) rotate(-4deg)}}
-.gart .g-roll{animation:gRoll 1.5s ease-in-out infinite}
-@keyframes gRoll{0%,100%{transform:none}50%{transform:translateY(12px)}}
-.gart .g-rollw{animation:gRollW 1.8s ease-in-out infinite}
-@keyframes gRollW{0%,100%{transform:none}50%{transform:translateX(8px)}}
-.gart .g-tick{transform-origin:50% 93%;animation:gTick 4s steps(12) infinite}
-@keyframes gTick{to{transform:rotate(360deg)}}
-.gart .g-shake{transform-origin:50% 100%;animation:gShake .5s ease-in-out infinite}
-@keyframes gShake{0%,100%{transform:none}50%{transform:rotate(-12deg)}}
-.gart .g-twinkle{transform-origin:50% 50%;animation:gTwinkle 1.6s ease-in-out infinite}
-@keyframes gTwinkle{0%,100%{transform:none}50%{transform:scale(.5) rotate(45deg)}}
-.gart .g-pop{animation:gPop 2.2s var(--spring) infinite}
-@keyframes gPop{0%,55%,100%{transform:none}70%{transform:translateY(-12px)}}
-.gart .g-turn{transform-origin:50% 50%;animation:gTurn 2.6s ease-in-out infinite}
-@keyframes gTurn{0%,100%{transform:none}50%{transform:scaleX(-1)}}
-.gart .g-stream{animation:gStream .6s linear infinite}
-@keyframes gStream{to{stroke-dashoffset:-13}}
-.gart .g-buzz{animation:gBuzz .12s linear infinite}
-@keyframes gBuzz{0%,100%{transform:none}50%{transform:translateX(.8px)}}
 
 /* ── Minuteur flottant ── */
 #tpill{position:fixed;left:50%;top:calc(var(--safe-t) + 10px);z-index:92;transform:translateX(-50%);width:max-content;display:flex;align-items:center;gap:10px;height:46px;padding:0 6px 0 8px;border-radius:999px;background:#1A1A18;color:#fff;box-shadow:var(--shadow-float);max-width:calc(100% - 32px)}
