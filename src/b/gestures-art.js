@@ -394,14 +394,22 @@ const GART = (() => {
 
   /* 23 · Laisser reposer */
   A.reposer = {t:"Laisser reposer", v:"laisser reposer ou mariner au frais", c:["#DCE8F7","#F3F8FE"],
-    d: () => table(178, "#DCE3EA", "#C5CFD9") + bowl(120, 112, 90, "#FFFFFF", "#D9824A", 0.68) +
-      '<path d="M28 112Q30 98 120 96Q210 98 212 112" fill="#EAF4FE" fill-opacity=".55" stroke="#8FB3D6" stroke-width="2"/><path d="M30 112Q120 124 210 112" fill="none" stroke="#8FB3D6" stroke-width="2"/>' +
-      '<g' + T(254, 92) + '><circle r="40" fill="#fff"/><circle r="31" fill="#F4F3EF" stroke-width="1.6"/><circle class="pie" r="15.5" fill="none" stroke="#F2B45A" stroke-width="31" transform="rotate(-90)" pathLength="100"/>' +
-      [0,30,60,90,120,150,180,210,240,270,300,330].map(a => '<path d="M0-31v' + (a % 90 ? 4 : 7) + '" stroke-width="2" transform="rotate(' + a + ')"/>').join("") +
-      '<g class="ha"><path d="M0 0V-26" stroke="' + L + '" stroke-width="3.4"/></g><circle r="3.6" fill="' + L + '"/><rect x="-9" y="-52" width="18" height="10" rx="3.5" fill="#AEB8C2"/></g>' +
+    d: () => table(178, "#DCE3EA", "#C5CFD9") + bowl(116, 112, 90, "#FFFFFF", "#D9824A", 0.68) +
+      '<ellipse cx="116" cy="111" rx="95" ry="17" fill="#CFE4F7" fill-opacity=".38" stroke="#7FA9D3" stroke-width="2.2"/>' +
+      '<path d="M21 111Q20 122 26 128M211 111Q212 122 206 128" stroke="#7FA9D3" stroke-width="2.2" fill="none"/><path d="M24 116A93 17 0 0 0 208 116" fill="none" stroke="#7FA9D3" stroke-width="2.2"/>' +
+      '<path d="M54 104Q86 98 122 99M146 101Q166 102 178 105" stroke="#fff" stroke-width="3" fill="none"/>' +
+      '<g' + T(258, 96) + '>' + g("hg",
+        '<path d="M-18-46C-18-20-4-8-3 0C-4 8-18 20-18 46H18C18 20 4 8 3 0C4-8 18-20 18-46Z" fill="#F3F8FE"/>' +
+        g("ts", '<path d="M-15-38H15C14-22 4-9 0-3C-4-9-14-22-15-38Z" fill="#F2B45A" stroke="none"/>') +
+        g("bs", '<path d="M-15 43H15C14 27 4 14 0 8C-4 14-14 27-15 43Z" fill="#F2B45A" stroke="none"/>') +
+        '<path class="sm" d="M0-2V42" stroke="#F2B45A" stroke-width="2.4" stroke-dasharray="4 3"/>' +
+        '<path d="M-18-46C-18-20-4-8-3 0C-4 8-18 20-18 46H18C18 20 4 8 3 0C4-8 18-20 18-46Z" fill="none"/><path d="M-12-38C-12-26-8-18-4-12" stroke="#fff" stroke-width="2.6" fill="none"/>' +
+        '<rect x="-28" y="-55" width="56" height="10" rx="4" fill="' + WD + '"/><rect x="-28" y="45" width="56" height="10" rx="4" fill="' + WD + '"/><path d="M-23-45V45M23-45V45" stroke-width="3.4"/><path d="M-23-45V45M23-45V45" stroke="' + WD + '" stroke-width="1.4"/>') + "</g>" +
       '<g' + T(44, 46) + '><g class="fz"><path d="M0-16V16M-14-8L14 8M-14 8L14-8" stroke="#6FA8E6" stroke-width="3.4"/><path d="M-4-12L0-8 4-12M-4 12L0 8 4 12" stroke="#6FA8E6" stroke-width="2.4" fill="none"/></g></g>',
-    css: k => ".gx-" + k + " .pie{stroke:#F2B45A;stroke-dasharray:0 100;animation:" + k + "Pi 5s linear infinite}" + kf(k, "Pi", "0%{stroke-dasharray:0 100}92%{stroke-dasharray:100 0;opacity:1}100%{stroke-dasharray:100 0;opacity:0}") +
-      an(k, ".ha", "H", 5, "linear", "transform-box:view-box;transform-origin:0 0") + kf(k, "H", "to{transform:rotate(360deg)}") +
+    css: k => an(k, ".hg", "G", 6, "linear") + kf(k, "G", "0%,88%{transform:rotate(0);animation-timing-function:" + E + "}100%{transform:rotate(180deg)}") +
+      an(k, ".ts", "T", 6, "linear", "transform-origin:50% 100%") + kf(k, "T", "0%{transform:scaleY(1)}84%,100%{transform:scaleY(0)}") +
+      an(k, ".bs", "B", 6, "linear", "transform-origin:50% 100%") + kf(k, "B", "0%{transform:scaleY(.02)}84%,100%{transform:scaleY(1)}") +
+      ".gx-" + k + " .sm{animation:" + k + "S .5s linear infinite," + k + "So 6s linear infinite}" + kf(k, "S", "to{stroke-dashoffset:-7}") + kf(k, "So", "0%,83%{opacity:1}85%,100%{opacity:0}") +
       an(k, ".fz", "F", 3, E) + kf(k, "F", "0%,100%{transform:rotate(0) scale(1)}50%{transform:rotate(30deg) scale(1.12)}")};
 
   /* 24 · Assaisonner */

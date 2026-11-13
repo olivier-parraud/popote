@@ -11,6 +11,7 @@ const hands = ['A', 'B'].map(h => '<div class="hcol"><h3>' + (h === 'A' ? 'Main 
   [['revenir', 1], ['fouetter', 15], ['emincer', 7]].map(([k, n]) => '<div class="art sm">' + GA.svg(k, h) + '</div>').join('') + '</div></div>').join('');
 
 const P = [
+  [11, 'reposer', 'Laisser reposer', "Le film étirable couvre maintenant tout le bol et retombe sur les bords. Le minuteur est remplacé par un sablier qui s'écoule puis se retourne."],
   [27, 'rouler', 'Rouler', "Le bas se replie, puis les deux côtés se rabattent sur toute la hauteur, par-dessus le bas replié. On roule ensuite depuis le bas : le paquet devient un rouleau bien fermé."],
   [30, 'brochettes', 'Brochettes', "La pique est vide au départ. Les morceaux s'enfilent un par un, puis tout disparaît ensemble avant la boucle suivante."],
 ];
@@ -32,7 +33,7 @@ body.cook .hcol{background:#1A1A18;border-color:#2C2B27;color:#F3F1EA}
 body.cook .tag{background:#2C2B27;color:#F3F1EA}
 </style>
 <div class="wrap">
-<header><span class="kick">Biscuit · mode cuisine</span><h1>Gestes corrigés, à valider</h1><p>Les deux gestes encore à reprendre, avec les numéros de la première galerie.</p></header>
+<header><span class="kick">Biscuit · mode cuisine</span><h1>Gestes corrigés, à valider</h1><p>Les trois gestes encore à reprendre, avec les numéros de la première galerie.</p></header>
 <div class="bar"><div class="seg" role="group" aria-label="Fond"><button aria-pressed="true" data-bg="light">Fond clair</button><button aria-pressed="false" data-bg="cook">Comme en cuisine</button></div><div class="seg" role="group" aria-label="Vitesse"><button aria-pressed="true" data-sp="1">Vitesse normale</button><button aria-pressed="false" data-sp="0.4">Ralenti</button><button aria-pressed="false" data-sp="0">Pause</button></div></div>
 <h2 class="sec">Deuxième essai</h2>
 <p class="sub">Main A partout, Émincer en version A. Les autres gestes sont validés et ne bougent plus.</p>
