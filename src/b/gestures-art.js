@@ -394,19 +394,19 @@ const GART = (() => {
 
   /* 23 · Laisser reposer */
   A.reposer = {t:"Laisser reposer", v:"laisser reposer ou mariner au frais", c:["#DCE8F7","#F3F8FE"],
-    d: () => table(178, "#DCE3EA", "#C5CFD9") + bowl(116, 112, 90, "#FFFFFF", "#D9824A", 0.68) +
+    d: k => table(178, "#DCE3EA", "#C5CFD9") + bowl(116, 112, 90, "#FFFFFF", "#D9824A", 0.68) +
       '<ellipse cx="116" cy="111" rx="95" ry="17" fill="#CFE4F7" fill-opacity=".38" stroke="#7FA9D3" stroke-width="2.2"/>' +
       '<path d="M21 111Q20 122 26 128M211 111Q212 122 206 128" stroke="#7FA9D3" stroke-width="2.2" fill="none"/><path d="M24 116A93 17 0 0 0 208 116" fill="none" stroke="#7FA9D3" stroke-width="2.2"/>' +
       '<path d="M54 104Q86 98 122 99M146 101Q166 102 178 105" stroke="#fff" stroke-width="3" fill="none"/>' +
-      '<g' + T(258, 96) + '>' + g("hg",
+      '<g' + T(264, 96, 0, 0.88) + '>' + g("hg",
         '<path d="M-18-46C-18-20-4-8-3 0C-4 8-18 20-18 46H18C18 20 4 8 3 0C4-8 18-20 18-46Z" fill="#F3F8FE"/>' +
-        g("ts", '<path d="M-15-38H15C14-22 4-9 0-3C-4-9-14-22-15-38Z" fill="#F2B45A" stroke="none"/>') +
+        '<clipPath id="' + k + '-gl"><path d="M-18-46C-18-20-4-8-3 0C-4 8-18 20-18 46H18C18 20 4 8 3 0C4-8 18-20 18-46Z"/></clipPath><g clip-path="url(#' + k + '-gl)">' + g("ts", '<path d="M-15-38H15C14-22 4-9 0-3C-4-9-14-22-15-38Z" fill="#F2B45A" stroke="none"/>') +
         g("bs", '<path d="M-15 43H15C14 27 4 14 0 8C-4 14-14 27-15 43Z" fill="#F2B45A" stroke="none"/>') +
-        '<path class="sm" d="M0-2V42" stroke="#F2B45A" stroke-width="2.4" stroke-dasharray="4 3"/>' +
+        '<path class="sm" d="M0-2V42" stroke="#F2B45A" stroke-width="2.4" stroke-dasharray="4 3"/>' + "</g>" +
         '<path d="M-18-46C-18-20-4-8-3 0C-4 8-18 20-18 46H18C18 20 4 8 3 0C4-8 18-20 18-46Z" fill="none"/><path d="M-12-38C-12-26-8-18-4-12" stroke="#fff" stroke-width="2.6" fill="none"/>' +
         '<rect x="-28" y="-55" width="56" height="10" rx="4" fill="' + WD + '"/><rect x="-28" y="45" width="56" height="10" rx="4" fill="' + WD + '"/><path d="M-23-45V45M23-45V45" stroke-width="3.4"/><path d="M-23-45V45M23-45V45" stroke="' + WD + '" stroke-width="1.4"/>') + "</g>" +
       '<g' + T(44, 46) + '><g class="fz"><path d="M0-16V16M-14-8L14 8M-14 8L14-8" stroke="#6FA8E6" stroke-width="3.4"/><path d="M-4-12L0-8 4-12M-4 12L0 8 4 12" stroke="#6FA8E6" stroke-width="2.4" fill="none"/></g></g>',
-    css: k => an(k, ".hg", "G", 6, "linear") + kf(k, "G", "0%,88%{transform:rotate(0);animation-timing-function:" + E + "}100%{transform:rotate(180deg)}") +
+    css: k => an(k, ".hg", "G", 6, "linear", "transform-box:view-box;transform-origin:0 0") + kf(k, "G", "0%,88%{transform:rotate(0);animation-timing-function:" + E + "}100%{transform:rotate(180deg)}") +
       an(k, ".ts", "T", 6, "linear", "transform-origin:50% 100%") + kf(k, "T", "0%{transform:scaleY(1)}84%,100%{transform:scaleY(0)}") +
       an(k, ".bs", "B", 6, "linear", "transform-origin:50% 100%") + kf(k, "B", "0%{transform:scaleY(.02)}84%,100%{transform:scaleY(1)}") +
       ".gx-" + k + " .sm{animation:" + k + "S .5s linear infinite," + k + "So 6s linear infinite}" + kf(k, "S", "to{stroke-dashoffset:-7}") + kf(k, "So", "0%,83%{opacity:1}85%,100%{opacity:0}") +
